@@ -6,7 +6,9 @@ hide:
 
 <div class="soda-hero" markdown>
 
-# SODA <span class="grad">Dual-Arm</span>
+<span class="soda-led"><i></i>operator docs · live</span>
+
+# SODA <span class="au">Dual-Arm</span>
 
 **A tabletop dual-arm robot that runs itself — and runs *your* policy.**
 
