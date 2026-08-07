@@ -1,6 +1,8 @@
 # Software Updates
 
-> Purpose: what to expect from automatic robot updates, and the few recovery commands an operator may ever need. Audience: on-site operators / customer admins.
+!!! quote
+    Purpose: what to expect from automatic robot updates, and the few recovery commands an operator may ever need. Audience: on-site operators / customer admins.
+
 
 **Day-to-day: nothing to do.** The robot updates itself, silently and safely, over the internet. It never interrupts a job and rolls itself back if an update misbehaves.
 
@@ -34,7 +36,9 @@ All except `soda version` require `sudo`.
 
 `update.sh` and `rollback.sh` both wait for the robot to be idle before switching versions, exactly like the automatic path.
 
-> **Note:** In an emergency where the backend is unresponsive and you have confirmed the arms are in a mechanically safe pose, `sudo /opt/robot/ota/rollback.sh --force` skips the idle wait. Use it only in that situation.
+!!! warning "Note:"
+    In an emergency where the backend is unresponsive and you have confirmed the arms are in a mechanically safe pose, `sudo /opt/robot/ota/rollback.sh --force` skips the idle wait. Use it only in that situation.
+
 
 ## Where history and logs live
 

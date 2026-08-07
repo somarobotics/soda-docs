@@ -1,10 +1,14 @@
 # SODA Tabletop Dual-Arm — Getting Started
 
-> **Purpose / Audience**: bring a freshly-unboxed unit from install to a calibrated, running robot, then operate it day to day — for the on-site customer-operator.
+!!! abstract "Purpose / Audience"
+    bring a freshly-unboxed unit from install to a calibrated, running robot, then operate it day to day — for the on-site customer-operator.
+
 
 The whole robot ships as **one Docker image** that auto-starts on boot. In normal use you drive everything from the browser (`:8079`) or the `soda` CLI and never touch Docker directly. This page covers install, daily operation, the container commands for the rare times you need them, updates, and where your data lives.
 
-> **Safety**: The software STOP kills the robot stack; arm torque is cut by the firmware watchdog within about half a second and the arms sag under gravity — it is not a mechanical brake. The only guaranteed emergency stop is cutting arm power at the AC plug. Full details: [safety.md](safety.md).
+!!! warning "Safety"
+    The software STOP kills the robot stack; arm torque is cut by the firmware watchdog within about half a second and the arms sag under gravity — it is not a mechanical brake. The only guaranteed emergency stop is cutting arm power at the AC plug. Full details: [safety.md](safety.md).
+
 
 ---
 
@@ -16,13 +20,15 @@ The whole robot ships as **one Docker image** that auto-starts on boot. In norma
 curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | bash
 ```
 
-> **Vendor / dev channel override** — only for vendor test machines:
->
-> ```bash
-> curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | SODA_CHANNEL=dev bash
-> ```
->
-> Note the env var goes **on `bash`, not on `curl`** — `curl` doesn't read it, and bash needs it set in its own environment.
+!!! note "Vendor / dev channel override"
+    — only for vendor test machines:
+
+    ```bash
+    curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | SODA_CHANNEL=dev bash
+    ```
+
+    Note the env var goes **on `bash`, not on `curl`** — `curl` doesn't read it, and bash needs it set in its own environment.
+
 
 That's it. The bootstrap handles:
 
@@ -33,7 +39,9 @@ That's it. The bootstrap handles:
 
 The whole flow is idempotent — re-run the same command any time and it skips finished steps.
 
-> **Note:** `docker compose -f /opt/robot/docker-compose.yml up -d` is **not** the first-install path. The bootstrap installer is what provisions the compose file, systemd timers, OTA, and RT isolation. The compose `up -d` (below) is only a container-lifecycle command you use *after* a manual `down` — it will not set a unit up from scratch.
+!!! note "Note:"
+    `docker compose -f /opt/robot/docker-compose.yml up -d` is **not** the first-install path. The bootstrap installer is what provisions the compose file, systemd timers, OTA, and RT isolation. The compose `up -d` (below) is only a container-lifecycle command you use *after* a manual `down` — it will not set a unit up from scratch.
+
 
 **Architecture**: this image is multi-arch (linux/amd64 + linux/arm64). x86_64 and Jetson / ARM customer machines both work out of the box — `docker pull` auto-selects the right one. M-series Macs are not supported as customer machines (no native Linux GPU access).
 
@@ -64,7 +72,9 @@ docker cp "$(docker create ghcr.io/somarobotics/soda-app:$VERSION)":/opt/app/com
 bash /tmp/install.sh
 ```
 
-> Vendors performing a formal on-site handover follow the [commissioning & delivery SOP](shipped-docs.md), which wraps this install with the license, calibration, and acceptance sign-off checklist.
+!!! quote
+    Vendors performing a formal on-site handover follow the [commissioning & delivery SOP](shipped-docs.md), which wraps this install with the license, calibration, and acceptance sign-off checklist.
+
 
 ---
 
@@ -130,7 +140,9 @@ The arm control loop must run at `SCHED_FIFO` on a **kernel-isolated CPU core** 
 
 Verify it after boot with `**soda smi**` (no flags): each arm's control loop should show it pinned to an isolated core at `SCHED_FIFO`, and `soda smi --rate` should sit at ~499–500 Hz per arm (acceptance floor: ≥ 485 Hz sustained, both arms). If `soda smi` shows the loop on a shared core at normal priority, isolation is not active — re-run the step above and reboot. On multi-camera cells the launcher also pins the RealSense servers off the arm cores automatically (log line `[launcher] CPU partition: ...`).
 
-> **Operational rule**: run the browser UI on a **separate laptop** and keep the NUC headless. Loading the host with a local browser is the most common cause of control-loop jitter.
+!!! note "Operational rule"
+    run the browser UI on a **separate laptop** and keep the NUC headless. Loading the host with a local browser is the most common cause of control-loop jitter.
+
 
 ---
 
@@ -138,7 +150,9 @@ Verify it after boot with `**soda smi**` (no flags): each arm's control loop sho
 
 You almost never touch Docker — the container auto-starts on boot and OTA manages upgrades. This section is for the rare times you do: a full teardown, restart, or logs.
 
-> **Two different "stops."** Stopping the **container** (Docker `down`) tears down everything, launcher included. Stopping the **stack** (UI `Stop` / `soda stop`) kills every stack process but the launcher and container keep running, so you can Launch again in seconds. Day to day you want the stack-level stop, not the container.
+!!! note "Two different "stops.""
+    Stopping the **container** (Docker `down`) tears down everything, launcher included. Stopping the **stack** (UI `Stop` / `soda stop`) kills every stack process but the launcher and container keep running, so you can Launch again in seconds. Day to day you want the stack-level stop, not the container.
+
 
 Everything lives in `/opt/robot`. These commands assume the compose file there.
 

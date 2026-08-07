@@ -1,7 +1,9 @@
 # Control Modes
 
-> **Purpose:** Understand what a control mode does to the arms and how to switch it.
-> **Audience:** Operators running a SODA bimanual cell.
+!!! abstract "Purpose:"
+    Understand what a control mode does to the arms and how to switch it.
+    **Audience:** Operators running a SODA bimanual cell.
+
 
 A **control mode** decides how *firmly* an arm holds its target position.
 

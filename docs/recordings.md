@@ -1,6 +1,8 @@
 # Where Do My Recordings Go?
 
-> **Purpose / Audience:** For operators — where SODA writes recordings and how to make each.
+!!! abstract "Purpose / Audience:"
+    For operators — where SODA writes recordings and how to make each.
+
 
 Almost everything you record — hand-driven demos **and** policy rollouts — lands in **one place: `/opt/robot/recordings/hdf5/`** on the host, in the same replayable episode format. Running a policy and recording it (with DAgger takeovers) is **one integrated flow**, not two separate destinations. A low-level debug capture (`/opt/robot/output/policy_runs/`) also exists, but it's off by default and is *not* what `--record` produces.
 
@@ -22,13 +24,17 @@ The episodes you collect and train on. Same `trajectory.h5` + `cameras/*.mp4` + 
 
 A separate, low-level capture of exactly what the **model** saw and output: `policy_view.mp4` (the composited model-view), `tracking.csv` (per-step target joints), `probe.json` (run metadata). Use it to debug *why* a policy behaved as it did.
 
-> **Note:** this is **not** produced by `soda run --record`. It only turns on when a policy entry (or a `/policy/start` override) sets `record: true`. It is debug telemetry — **not** a training episode and **not** replayable.
+!!! note "Note:"
+    this is **not** produced by `soda run --record`. It only turns on when a policy entry (or a `/policy/start` override) sets `record: true`. It is debug telemetry — **not** a training episode and **not** replayable.
+
 
 ## Raw topic streams · telemetry
 
 `soda stream --sub <topics> --record` dumps raw high-rate PUB topic streams (e.g. `left/joint_states`) for latency/analysis — not episodes.
 
-> `soda replay play` streams a saved **joint** trajectory back to the arms (⚠ moves the arms); images are not replayed. Add `--record` to a replay to save the playthrough as a new `recordings/hdf5/` episode.
+!!! warning
+    `soda replay play` streams a saved **joint** trajectory back to the arms (⚠ moves the arms); images are not replayed. Add `--record` to a replay to save the playthrough as a new `recordings/hdf5/` episode.
+
 
 ## These survive updates
 

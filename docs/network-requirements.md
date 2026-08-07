@@ -1,8 +1,10 @@
 # Network Requirements
 
-> **Purpose / Audience**: what the unit talks to on the internet and the LAN, for the IT/network
-> team provisioning the site. Canonical port reference:
-> [integration/ports-and-planes.md](shipped-docs.md).
+!!! abstract "Purpose / Audience"
+    what the unit talks to on the internet and the LAN, for the IT/network
+    team provisioning the site. Canonical port reference:
+    [integration/ports-and-planes.md](shipped-docs.md).
+
 
 ---
 

@@ -1,8 +1,10 @@
 # Safety
 
-> **Purpose / Audience**: the canonical safety page for everyone near the cell — what each stop
-> actually does, what SAFE-HOLD is (and is not), and the rules for attended and unattended runs.
-> Other pages summarize; this page is the source of truth.
+!!! abstract "Purpose / Audience"
+    the canonical safety page for everyone near the cell — what each stop
+    actually does, what SAFE-HOLD is (and is not), and the rules for attended and unattended runs.
+    Other pages summarize; this page is the source of truth.
+
 
 ---
 
@@ -14,9 +16,11 @@
 | **Software STOP** — `soda stop` (= `soda estop`), UI STOP, or `POST :8079/launcher/estop` | Kills every stack process (backend, arm/cam servers, teleop, policy clients) with no grace period; signal delivery target < 50 ms. Torque cut is **indirect**: with the arm servers dead, the firmware watchdog stops being fed and the arm parks when its ~300 ms timeout expires. Motion ceases within roughly half a second, then the arms **sag under gravity**. The launcher survives, so `:8079` stays reachable and `soda up` restarts the stack. | Software emergency stop — accepting the sag. |
 | **`POST :8080/robot/stop`** | An arbiter-latched software **HOLD** at the current position — the arm stays powered and stiff; other command sources are inhibited for 0.5 s. Requires a live backend. | Holding motion. **Not an emergency stop.** |
 
-> The software STOP kills the robot stack; arm torque is cut by the firmware watchdog within
-> about half a second and the arms sag under gravity — it is not a mechanical brake. The only
-> guaranteed emergency stop is cutting arm power at the AC plug.
+!!! warning
+    The software STOP kills the robot stack; arm torque is cut by the firmware watchdog within
+    about half a second and the arms sag under gravity — it is not a mechanical brake. The only
+    guaranteed emergency stop is cutting arm power at the AC plug.
+
 
 No software path guarantees a stop unconditionally — it depends on the launcher being alive and
 the firmware watchdog working. Treat the AC plug as the e-stop of record.

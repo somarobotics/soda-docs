@@ -7,6 +7,9 @@ edit_uri: ""
 theme:
   name: material
   font: false  # system fonts — no Google Fonts CDN (keeps the site fast everywhere)
+  icon:
+    logo: material/robot-industrial
+  favicon: assets/favicon.svg
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -24,16 +27,28 @@ theme:
         name: Switch to light mode
   features:
     - navigation.instant
+    - navigation.tabs
     - navigation.top
+    - navigation.footer
+    - toc.follow
     - content.code.copy
     - search.suggest
+    - search.highlight
+
+extra_css:
+  - stylesheets/extra.css
 
 markdown_extensions:
   - admonition
+  - attr_list
+  - md_in_html
   - toc:
       permalink: true
   - pymdownx.highlight
   - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 nav:
   - Home: index.md

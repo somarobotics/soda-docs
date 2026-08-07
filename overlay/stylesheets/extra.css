@@ -1,0 +1,101 @@
+/* SODA docs — brand layer over MkDocs Material.
+   Palette: deep teal on quiet neutrals; one bold moment (the hero), everything
+   else restrained. Both schemes styled via Material's own tokens. */
+
+:root {
+  --soda-teal: #0e7c7b;
+  --soda-teal-2: #2cb1ac;
+  --md-primary-fg-color: #0e7c7b;
+  --md-primary-fg-color--dark: #0a5b5a;
+  --md-accent-fg-color: #12a5a0;
+}
+[data-md-color-scheme="slate"] {
+  --soda-teal: #3fb5b0;
+  --soda-teal-2: #6fd3cf;
+  --md-typeset-a-color: #3fb5b0;
+  --md-accent-fg-color: #4fc6c1;
+}
+
+/* ---------- hero ---------- */
+.soda-hero {
+  text-align: center;
+  padding: 2.2rem 0.5rem 1.6rem;
+  margin-bottom: 1.2rem;
+  border-radius: 0.6rem;
+  background:
+    radial-gradient(38rem 16rem at 50% -4rem,
+      color-mix(in srgb, var(--soda-teal) 14%, transparent), transparent 70%),
+    repeating-linear-gradient(90deg,
+      color-mix(in srgb, var(--soda-teal) 7%, transparent) 0 1px, transparent 1px 3.2rem),
+    repeating-linear-gradient(0deg,
+      color-mix(in srgb, var(--soda-teal) 7%, transparent) 0 1px, transparent 1px 3.2rem);
+}
+.soda-hero h1 {
+  font-size: clamp(2.1rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+}
+.soda-hero .grad {
+  background: linear-gradient(92deg, var(--soda-teal), var(--soda-teal-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.soda-hero p { max-width: 34rem; margin-left: auto; margin-right: auto; }
+.soda-hero .md-button { margin: 0.3rem 0.25rem; }
+.soda-hero .highlight { max-width: 36rem; margin: 1.1rem auto 0; text-align: left; }
+
+/* ---------- stat strip ---------- */
+.soda-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.6rem;
+  margin: 0 0 1.8rem;
+}
+.soda-stats > div {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-top: 3px solid var(--soda-teal);
+  border-radius: 0.4rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--md-code-bg-color);
+}
+.soda-stats b {
+  display: block;
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--soda-teal);
+}
+.soda-stats span {
+  font-size: 0.62rem;
+  color: var(--md-default-fg-color--light);
+  line-height: 1.35;
+  display: block;
+  margin-top: 0.15rem;
+}
+
+/* ---------- card grid ---------- */
+.md-typeset .grid.cards > ul > li {
+  border-radius: 0.5rem;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.md-typeset .grid.cards > ul > li:hover {
+  border-color: var(--soda-teal);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--soda-teal) 18%, transparent);
+}
+.md-typeset .grid.cards svg { color: var(--soda-teal); }
+@media (prefers-reduced-motion: reduce) {
+  .md-typeset .grid.cards > ul > li { transition: none; }
+  .md-typeset .grid.cards > ul > li:hover { transform: none; }
+}
+
+/* ---------- global polish ---------- */
+.md-typeset table:not([class]) th {
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  letter-spacing: 0.07em;
+}
+.md-typeset table:not([class]) td { font-variant-numeric: tabular-nums; }
+.md-typeset h2 { font-weight: 700; letter-spacing: -0.01em; }
+.md-typeset img { border-radius: 0.3rem; }

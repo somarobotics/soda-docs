@@ -1,6 +1,8 @@
 # Data Collection — Quest Dual-Arm Teleop
 
-> **Purpose / Audience:** Operator guide to driving both arms with two Meta Quest 3 controllers and recording demonstration episodes for training.
+!!! abstract "Purpose / Audience:"
+    Operator guide to driving both arms with two Meta Quest 3 controllers and recording demonstration episodes for training.
+
 
 Two controllers, two arms: the **right** controller drives the **right** arm, the **left** drives the **left**. You hold the clutch to move, release to let go, and record each attempt as one episode (HDF5 + video).
 
@@ -67,7 +69,8 @@ Recording is the **same** console — no separate step. Single keypress, no Ente
 
 Set the language instruction with `t` (or `--task "pick up the red block"` if launching the script directly). It is written to each episode as `instruction.txt`.
 
-> **Saving freezes the control loop while it encodes video — hold still until you see `✓ ready`.**
+!!! note "Saving freezes the control loop while it encodes video — hold still until you see `✓ ready`."
+
 
 The same keys apply in the windowed camera preview (press them in that window) and in a plain terminal console.
 

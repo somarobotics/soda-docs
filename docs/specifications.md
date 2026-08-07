@@ -1,8 +1,10 @@
 # Specifications
 
-> **Purpose / Audience**: the verified numbers of this cell in one place, for operators and
-> integration engineers. Everything here is grounded in the shipped software and control URDF —
-> figures the software cannot verify are marked "confirm with your vendor".
+!!! abstract "Purpose / Audience"
+    the verified numbers of this cell in one place, for operators and
+    integration engineers. Everything here is grounded in the shipped software and control URDF —
+    figures the software cannot verify are marked "confirm with your vendor".
+
 
 ---
 

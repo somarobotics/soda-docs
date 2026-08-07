@@ -1,8 +1,10 @@
 # Quest Headset Setup (Teleop)
 
-> **Purpose / Audience**: one-time preparation of a Meta Quest headset for SODA dual-arm
-> teleop, the per-session connection check, and its failure modes. For the teleop workflow
-> itself (buttons, clutch, recording), see [data-collection-teleop.md](data-collection-teleop.md).
+!!! abstract "Purpose / Audience"
+    one-time preparation of a Meta Quest headset for SODA dual-arm
+    teleop, the per-session connection check, and its failure modes. For the teleop workflow
+    itself (buttons, clutch, recording), see [data-collection-teleop.md](data-collection-teleop.md).
+
 
 SODA drives teleop through a small headset app that streams controller poses and button
 state to the robot over ADB (Android Debug Bridge). **The app ships inside the SODA
@@ -27,9 +29,11 @@ the headset. The only setup that exists is the one-time procedure that makes the
 
 ## One-time headset preparation
 
-> The screenshots below show the Meta (Oculus) site and headset UI as captured — Meta
-> reworks these screens over time, so the highlighted entry points may have moved, but the
-> steps themselves are unchanged.
+!!! quote
+    The screenshots below show the Meta (Oculus) site and headset UI as captured — Meta
+    reworks these screens over time, so the highlighted entry points may have moved, but the
+    steps themselves are unchanged.
+
 
 ### 1 · Meta account — and where to find your username
 

@@ -1,6 +1,8 @@
 # Troubleshooting
 
-> **Purpose / Audience** — Operator symptom → fix guide for the SODA bimanual robot. For on-site operators running the shipped product; no source access required.
+!!! abstract "Purpose / Audience"
+    — Operator symptom → fix guide for the SODA bimanual robot. For on-site operators running the shipped product; no source access required.
+
 
 Find your symptom in a table below and apply the fix. Items marked **Expected** are by-design behavior, not faults — no action needed unless noted. For upgrade issues see [updates.md](./updates.md); for CLI details see [soda-cli-reference.md](./soda-cli-reference.md); for what listens on which port/topic see [integration/ports-and-planes.md](shipped-docs.md) and the [integration overview](shipped-docs.md).
 
@@ -22,7 +24,9 @@ Find your symptom in a table below and apply the fix. Items marked **Expected** 
 | Gripper won't hold a part / drops it | Close was not commanded past the hold threshold, or hold torque is set to 0. | Command the gripper closed **past `gripper_hold_close_at` (0.5)**. It position-closes until contact (`\|vel\|<0.05` **and** `\|eff\|>2.0`), then latches to a torque hold at `gripper_hold_torque` (default **1.2**). Confirm `gripper_hold_torque > 0` in `site.yaml`. |
 | Gripper **overheats / thermally trips** during a long hold | Running an **old image** without the torque-latch hold — a sustained position-close stalls the motor at high effort (~6.6) until it trips. | Update to the current release (see [updates.md](./updates.md)). The torque hold draws ~10× lower effort, so a continuous grasp no longer overheats. |
 
-> **Note:** There is **no 6-axis force/torque sensor**. Reported "force" is per-joint **motor effort**, and contact detection above is effort-based, not true grip force.
+!!! note "Note:"
+    There is **no 6-axis force/torque sensor**. Reported "force" is per-joint **motor effort**, and contact detection above is effort-based, not true grip force.
+
 
 ## Live data / feedback
 
@@ -48,7 +52,9 @@ Expect **~499–500 Hz on both arms** (acceptance floor: **≥ 485 Hz sustained*
 | Arm suddenly **parks / stops on its own** under host load | A real-time comms timeout (arm firmware `PscApiCommunicationTimeout`) triggers a proactive parking-stop. | Keep the browser UI off the robot NUC (see below) and avoid heavy host load. If it recurs, report it — RT isolation may need re-checking. |
 | Need to **stop the robot immediately** | SAFE-HOLD and mode switches are software holds, not emergency stops. | Use the software STOP (`soda stop` / the UI STOP) to kill the robot stack — motion ceases within roughly half a second, then the arms sag. For a guaranteed stop, **cut arm AC power at the plug**. There is no software command that guarantees a motion stop. See [safety.md](./safety.md). |
 
-> **Note:** The software STOP kills the robot stack; arm torque is cut by the firmware watchdog within about half a second and the arms sag under gravity — it is not a mechanical brake. The only guaranteed emergency stop is cutting arm power at the AC plug. Full details: [safety.md](./safety.md).
+!!! warning "Note:"
+    The software STOP kills the robot stack; arm torque is cut by the firmware watchdog within about half a second and the arms sag under gravity — it is not a mechanical brake. The only guaranteed emergency stop is cutting arm power at the AC plug. Full details: [safety.md](./safety.md).
+
 
 ## UI & video
 
