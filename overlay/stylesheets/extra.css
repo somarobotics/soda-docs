@@ -194,6 +194,24 @@
   font-weight: 600;
   background: transparent !important;
 }
+/* neutralize Material's per-type full-border tints first (its selectors are
+   type-specific, so the generic .admonition rule above loses to them) */
+.md-typeset .admonition.warning,
+.md-typeset .admonition.danger,
+.md-typeset .admonition.failure,
+.md-typeset .admonition.tip,
+.md-typeset .admonition.success,
+.md-typeset .admonition.note,
+.md-typeset .admonition.info,
+.md-typeset .admonition.abstract,
+.md-typeset .admonition.quote,
+.md-typeset .admonition.example,
+.md-typeset .admonition.question,
+.md-typeset .admonition.bug {
+  border-color: var(--ph-line);
+  border-left-width: 3px;
+}
+
 /* state colors: gold = attention, red = danger, green = good, gray = info */
 .md-typeset .admonition.warning       { border-left-color: var(--ph-gold); }
 .md-typeset .warning > .admonition-title::before,
