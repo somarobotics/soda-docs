@@ -1,0 +1,57 @@
+site_name: SODA Docs
+site_description: Operator documentation for the SODA tabletop dual-arm robot.
+site_url: https://somarobotics.github.io/soda-docs/
+repo_url: https://github.com/somarobotics/soda-docs
+edit_uri: ""
+
+theme:
+  name: material
+  font: false  # system fonts — no Google Fonts CDN (keeps the site fast everywhere)
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Safety: safety.md
+  - Operate:
+      - Control Modes: control-modes.md
+      - CLI Reference: soda-cli-reference.md
+      - Run Your Policy: running-your-policy.md
+  - Collect Data:
+      - Teleop & Recording: data-collection-teleop.md
+      - Quest Headset Setup: quest-setup.md
+      - Where Recordings Go: recordings.md
+  - Maintain:
+      - Software Updates: updates.md
+      - Troubleshooting: troubleshooting.md
+  - Reference:
+      - Specifications: specifications.md
+      - Network Requirements: network-requirements.md
+      - Glossary: glossary.md
+      - Integration & Handover: shipped-docs.md
