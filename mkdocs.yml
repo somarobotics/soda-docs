@@ -58,6 +58,7 @@ nav:
       - Control Modes: control-modes.md
       - CLI Reference: soda-cli-reference.md
       - Run Your Policy: running-your-policy.md
+      - Policy Serving Contract: policy-serving.md
   - Collect Data:
       - Teleop & Recording: data-collection-teleop.md
       - Quest Headset Setup: quest-setup.md

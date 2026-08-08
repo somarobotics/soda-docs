@@ -86,7 +86,7 @@ recordings/hdf5/2026-05-27_14-30-12/
 ├── info.json          # arms / cameras / fps / resolution / codec + video frame counts
 ├── instruction.txt    # the task string
 └── cameras/
-    ├── left.mp4       # subsampled to ~30 fps, synced to trajectory.h5 frame_index
+    ├── left.mp4       # at the camera's real frame rate (~15 fps on the current config), synced to trajectory.h5 frame_index
     ├── right.mp4
     └── side.mp4       # filenames come from --record-cameras
 ```
