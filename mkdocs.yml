@@ -7,9 +7,8 @@ edit_uri: ""
 theme:
   name: material
   font: false  # system fonts — no Google Fonts CDN (keeps the site fast everywhere)
-  icon:
-    logo: material/robot-industrial
-  favicon: assets/favicon.svg
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
