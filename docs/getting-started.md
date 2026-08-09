@@ -1,9 +1,5 @@
 # SODA Tabletop Dual-Arm — Getting Started
 
-!!! abstract "Purpose / Audience"
-    bring a freshly-unboxed unit from install to a calibrated, running robot, then operate it day to day — for the on-site customer-operator.
-
-
 The whole robot ships as **one Docker image** that auto-starts on boot. In normal use you drive everything from the browser (`:8079`) or the `soda` CLI and never touch Docker directly. This page covers install, daily operation, the container commands for the rare times you need them, updates, and where your data lives.
 
 !!! warning "Safety"
@@ -19,16 +15,6 @@ The whole robot ships as **one Docker image** that auto-starts on boot. In norma
 ```bash
 curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | bash
 ```
-
-!!! note "Vendor / dev channel override"
-    — only for vendor test machines:
-
-    ```bash
-    curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | SODA_CHANNEL=dev bash
-    ```
-
-    Note the env var goes **on `bash`, not on `curl`** — `curl` doesn't read it, and bash needs it set in its own environment.
-
 
 That's it. The bootstrap handles:
 
@@ -72,10 +58,6 @@ docker cp "$(docker create ghcr.io/somarobotics/soda-app:$VERSION)":/opt/app/com
 bash /tmp/install.sh
 ```
 
-!!! quote
-    Vendors performing a formal on-site handover follow the [commissioning & delivery SOP](shipped-docs.md), which wraps this install with the license, calibration, and acceptance sign-off checklist.
-
-
 ---
 
 ## Day-to-day operation
@@ -85,14 +67,14 @@ The container is configured with `restart: unless-stopped`, so it **auto-starts 
 ### Normal use (UI-only)
 
 
-| Task                          | How                                                                   |
-| ----------------------------- | --------------------------------------------------------------------- |
-| Open UI                       | Browser → `http://<this-machine>:8079`                                |
-| Start arms (real)             | UI → `Launch (real)`                                                  |
-| Start arms (sim, no hardware) | UI → `Launch (sim)`                                                   |
-| Stop arms                     | UI → `Stop` (container keeps running; click Launch again to resume)   |
-| Software E-stop               | UI → `[STOP]`, or `curl -X POST http://localhost:8079/launcher/estop` |
-| **Hard E-stop**               | **Pull controller's AC plug.**                                        |
+| Task                          | How                                                                 |
+| ----------------------------- | ------------------------------------------------------------------- |
+| Open UI                       | Browser → `http://<this-machine>:8079`                              |
+| Start arms (real)             | UI → `Launch (real)`                                                |
+| Start arms (sim, no hardware) | UI → `Launch (sim)`                                                 |
+| Stop arms                     | UI → `Stop` (container keeps running; click Launch again to resume) |
+| Software E-stop               | UI → `[STOP]`                                                       |
+| **Hard E-stop**               | **Pull controller's AC plug.**                                      |
 
 
 ### Command-line control
@@ -105,7 +87,7 @@ The container is configured with `restart: unless-stopped`, so it **auto-starts 
 | Stop everything (software e-stop) | `soda stop` — kills every stack process (`soda estop` is a byte-identical alias)                                                 |
 | Status                            | `soda status`                                                                                                                    |
 | Run a policy                      | `soda run <id> "your prompt"` — stop **just the policy** with `q` / Ctrl-C in the run console; `soda stop` kills the whole stack |
-| Home / gripper                    | `soda home` · `soda gripper open|close [left|right|both]`                                                                        |
+| Home / gripper                    | `soda home` · `soda gripper open\|close [left\|right\|both]`                                                                     |
 | Loop rate + jitter (acceptance)   | `soda smi --rate` — see **Self-monitoring** below                                                                                |
 | System + RT health panel          | `soda smi` (`-l 1` to refresh)                                                                                                   |
 | Command→motion latency            | `soda smi --cmd-to-motion` (moves a joint) — see **Self-monitoring** below                                                       |
@@ -251,12 +233,9 @@ docker compose -f /opt/robot/docker-compose.yml restart
 | Doc                                                                      | When to read                                                             |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
 | [safety](safety.md)                                                      | What the software STOP does and does not guarantee, e-stop behavior      |
-| [network requirements](network-requirements.md)                          | Outbound endpoints, LAN ports, policy-server connectivity                |
 | [troubleshooting](troubleshooting.md)                                    | Anything goes wrong — install fails, container won't start, rate too low |
 | [soda CLI reference](soda-cli-reference.md)                              | Full `soda` command list and flags                                       |
 | [software updates](updates.md)                                           | The update / rollback flow in detail                                     |
-| [commissioning & delivery SOP](shipped-docs.md) | Vendor on-site install + acceptance sign-off                             |
 | [hand-eye calibration](shipped-docs.md)             | Hand-eye calibration walkthrough                                         |
-| [customer guide (index)](index.md)                                      | What the product does, where everything is                               |
 
 
