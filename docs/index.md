@@ -26,7 +26,6 @@ curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | bash
 
 <div class="soda-stats">
   <div><b>500 Hz</b><span>control loop, per arm</span></div>
-  <div><b>≥ 485 Hz</b><span>acceptance floor — verify it yourself with <code>soda smi --rate</code></span></div>
   <div><b>14 DoF</b><span>2 × 6-joint arms + grippers</span></div>
   <div><b>3 cameras</b><span>RealSense, hand-eye calibrated &lt; 5 mm</span></div>
 </div>
