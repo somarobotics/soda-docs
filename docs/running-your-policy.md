@@ -42,14 +42,17 @@ soda run <id> "..."             # live (default)
 state + actions — under `/opt/robot/recordings/hdf5/` (same format as a teleop demo,
 but policy-driven). It implies `-i` (the live keyboard console), so you can **barge in
 mid-rollout** — pause/resume, hand-correct — and those corrections land in the same
-recorded episode. `--dagger` goes further: it **implies `--record`**, records at 120 Hz,
+recorded episode. `--dagger` goes further: it **implies `--record`**, records at 150 Hz,
 and enables sticky-clutch Quest takeover, so you can grab a correction with the
-controllers mid-rollout. (`-d` suppresses the console even with `--record`; the recording
-still runs.) File layout and what each flag saves: [`recordings.md`](recordings.md).
+controllers mid-rollout — the whole rollout stays one episode, and your takeover spans
+are flagged per step (`action/controller_info/intervening`). (`-d` suppresses the console
+even with `--record`; the recording still runs.) Takeover controls, recorded fields and
+how to extract the correction spans: [`dagger.md`](dagger.md) · file layout:
+[`recordings.md`](recordings.md).
 
 ```bash
 soda run <id> "pick up the bottle" --record   # live rollout, saved as a demo episode
-soda run <id> "..." --dagger                   # --record + 120 Hz + Quest takeover (DAgger)
+soda run <id> "..." --dagger                   # --record + 150 Hz + Quest takeover (DAgger)
 soda run <id> "..." -i                         # live + keyboard barge-in console (no recording)
 ```
 

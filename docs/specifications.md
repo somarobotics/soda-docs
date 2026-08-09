@@ -63,7 +63,7 @@ The URDF `effort` tags are placeholders, **not** actuator torque ceilings — se
 | Healthy measured rate (`soda smi --rate`) | ~499–500 Hz per arm |
 | Acceptance floor | ≥ 485 Hz sustained, both arms |
 | Teleop episode record rate (`--control-hz`) | 150 Hz default (target) |
-| Backend session recorder | 60 Hz default · 120 Hz under `--dagger` |
+| Backend session recorder | 60 Hz default · 150 Hz under `--dagger` (teleop cadence) |
 
 ---
 

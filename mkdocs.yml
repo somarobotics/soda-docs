@@ -60,6 +60,7 @@ nav:
       - Policy Serving Contract: policy-serving.md
   - Collect Data:
       - Teleop & Recording: data-collection-teleop.md
+      - DAgger Corrections: dagger.md
       - Quest Headset Setup: quest-setup.md
       - Where Recordings Go: recordings.md
   - Maintain:

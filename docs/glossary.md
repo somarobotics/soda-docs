@@ -17,8 +17,9 @@ See [data-collection-teleop.md](data-collection-teleop.md).
 
 **DAgger** — `soda run <policy> --dagger`: a policy rollout where you can take over with the
 Quest mid-run (sticky clutch); the executed trajectory plus `action/policy` and `action/human`
-shadow streams are saved as **one** episode (recorded at 120 Hz), used to collect corrections
-for retraining. See [recordings.md](recordings.md).
+shadow streams are saved as **one** episode (recorded at 150 Hz), with per-step
+`action/controller_info/intervening` flags marking the takeover spans — used to collect
+corrections for retraining. See [dagger.md](dagger.md) · [recordings.md](recordings.md).
 
 **Episode (HDF5)** — one recorded attempt: 14-dim state + action, timestamps, and video, stored
 under `/opt/robot/recordings/hdf5/` (schema 2.1) and replayable with `soda replay`.

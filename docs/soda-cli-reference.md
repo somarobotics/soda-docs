@@ -136,13 +136,18 @@ soda list | params '<json>'      # list policies · live-tune knobs
 soda keys                        # interactive barge-in console:
                                  #   SPACE pause↔resume · s stop · f clear-fault · E ESTOP · q quit
 soda record start | stop [ok|fail] [task...]
-                                 # session recorder — what `run --record` uses under the hood
+                                 # session recorder — what `run --record` uses under the hood.
+                                 # `stop fail` DISCARDS the whole episode — under --dagger
+                                 # that includes every correction you grabbed
+
 ```
 
 `soda run` flags:
 
 - **`--record`** — starts episode recording **and** implies the live console.
-- **`--dagger`** — implies `--record`; records at 120 Hz and enables sticky-clutch Quest takeover.
+- **`--dagger`** — implies `--record`; records at 150 Hz (teleop's step cadence) and enables sticky-clutch Quest
+  takeover. The whole rollout is saved as **one** episode; takeover spans are flagged
+  per step (`action/controller_info/intervening`), not split into separate files.
 - **`-i`** / **`-d`** — force / suppress the console. `-d` detaches even with `--record`
   (recording still runs). Default: the console auto-attaches only for a **live** run on a TTY.
 

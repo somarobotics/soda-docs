@@ -26,54 +26,56 @@ connects to it as a client over the network.
 ```
 
 - You may host **(a)** an OpenPI-format checkpoint (runnable with the standard OpenPI
-  `serve_policy` server, which speaks this protocol natively), or **(b)** any custom
-  server that implements the wire protocol in §2.
+`serve_policy` server, which speaks this protocol natively), or **(b)** any custom
+server that implements the wire protocol in §2.
 - **Conformance is the policy provider's responsibility.** This document is the primary
-  and complete reference: train your policy, shape your data, and build your server
-  according to this contract. The platform does not adapt checkpoints or reshape
-  interfaces on your behalf.
+and complete reference: train your policy, shape your data, and build your server
+according to this contract. The platform does not adapt checkpoints or reshape
+interfaces on your behalf.
 - The robot side (drivers, cameras, safety clamps, timing) is fixed platform
-  infrastructure — your policy never needs to know about motors, only about the
-  observation → action-chunk mapping defined here.
+infrastructure — your policy never needs to know about motors, only about the
+observation → action-chunk mapping defined here.
 
 ---
 
 ## 2. Wire protocol
 
 - **Transport**: WebSocket, `ws://<your-host>:<port>` (host/port registered in the
-  robot's policy config, §6). Compression disabled, no frame-size cap.
+robot's policy config, §6). Compression disabled, no frame-size cap.
 - **Encoding**: msgpack with the OpenPI numpy extension — each array is packed as a map:
-
   ```python
   {b"__ndarray__": True, b"data": <raw bytes>, b"dtype": <dtype.str>, b"shape": <shape>}
   ```
-
   identical to the official `openpi_client` protocol, so OpenPI's
   `websocket_policy_server` works unmodified. (Wrapper keys are **bytes**; the
   top-level request keys `"state"` / `"images"` / `"prompt"` are **str**.)
 - **Handshake**: on every new connection — including reconnects after a dropped
-  socket — your server **must send exactly one msgpack metadata map before reading
-  anything**. An empty `{}` is accepted; optional keys `action_space` /
-  `orient_rep` assist action-space auto-detection. A server that skips this frame
-  deadlocks the client. (OpenPI's server does this natively; only custom servers
-  need to care.)
+socket — your server **must send exactly one msgpack metadata map before reading
+anything**. An empty `{}` is accepted; optional keys `action_space` /
+`orient_rep` assist action-space auto-detection. A server that skips this frame
+deadlocks the client. (OpenPI's server does this natively; only custom servers
+need to care.)
 - **Pattern**: after the handshake, strict request→response. One observation in, one
-  action chunk out. To signal an error, send a **text** frame — the robot raises it
-  as a policy-server error.
+action chunk out. To signal an error, send a **text** frame — the robot raises it
+as a policy-server error.
 
 ### Request (robot → server), one msgpack map
 
-| key | type / shape | content |
-|---|---|---|
-| `state` | float32 `(14,)` | joint state, layout in §3.2 |
+
+| key      | type / shape                                | content                                                                                   |
+| -------- | ------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `state`  | float32 `(14,)`                             | joint state, layout in §3.2                                                               |
 | `images` | map of 3 arrays, each uint8 `(3, 224, 224)` | keys `cam_high`, `cam_left_wrist`, `cam_right_wrist`; RGB, channel-first; framing in §3.1 |
-| `prompt` | str | the task instruction, verbatim |
+| `prompt` | str                                         | the task instruction, verbatim                                                            |
+
 
 ### Response (server → robot), one msgpack map
 
-| key | type / shape | content |
-|---|---|---|
+
+| key       | type / shape     | content                                                                                                                                                                     |
+| --------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `actions` | float32 `(T, W)` | action chunk; `T` = your chunk length (50 typical); `W` = action width, which selects the **action space** (§4.1). All values must be finite — a NaN/Inf chunk is rejected. |
+
 
 Accepted widths `W`: **14** (joint position — the reference space), **16/20**
 (cartesian pose, quat/rot6d), **38** (joint impedance), **40** (cartesian impedance).
@@ -91,7 +93,7 @@ robot applies, per frame:
 
 1. BGR→RGB conversion,
 2. **aspect-preserving resize + black letterbox to 224×224** (identical to OpenPI's
-   `resize_with_pad`; the 16:9 content occupies a 224×126 band with black bars).
+  `resize_with_pad`; the 16:9 content occupies a 224×126 band with black bars).
 
 So your policy always receives 224×224×3 RGB uint8 (sent channel-first). **Train on
 identically-framed images.** If your training pipeline uses OpenPI's standard
@@ -103,18 +105,20 @@ camera stream rate bounds freshness (≤ ~67 ms age), not the inference rate.
 
 ### 3.2 State (`state`, float32 14-D, and the action layout too)
 
-| index | 0–5 | 6 | 7–12 | 13 |
-|---|---|---|---|---|
+
+| index   | 0–5                 | 6            | 7–12                 | 13            |
+| ------- | ------------------- | ------------ | -------------------- | ------------- |
 | meaning | LEFT arm joints 1–6 | LEFT gripper | RIGHT arm joints 1–6 | RIGHT gripper |
+
 
 - Arm joints: **absolute positions, radians** (measured, not commanded).
 - Grippers: expressed in **your declared policy convention** — before sending, the
-  robot maps the measured hardware gripper (0.0 open → 0.67 closed) back into your
-  `gripper_source_*` range (§6), so `state` and `actions` always share one
-  convention. With the template's identity mapping (source = 0→0.67) the state is
-  the hardware range itself; a policy trained on, e.g., a 0→1.52 convention
-  receives 0→1.52. If these fields are omitted, the platform default source
-  convention is 0.0 (open) → 1.52 (closed).
+robot maps the measured hardware gripper (0.0 open → 0.67 closed) back into your
+`gripper_source_`* range (§6), so `state` and `actions` always share one
+convention. With the template's identity mapping (source = 0→0.67) the state is
+the hardware range itself; a policy trained on, e.g., a 0→1.52 convention
+receives 0→1.52. If these fields are omitted, the platform default source
+convention is 0.0 (open) → 1.52 (closed).
 
 ### 3.3 Prompt
 
@@ -127,10 +131,10 @@ deployment config. Byte-exact match with your training prompts is your responsib
 ## 4. Action specification
 
 - Row spacing in time is **1 / control_hz** (§5): the robot executes one row per
-  control tick and linearly interpolates between rows at 250 Hz.
+control tick and linearly interpolates between rows at 250 Hz.
 - Chunk length `T` is yours to choose; the platform standard is **50**.
 - Grippers are always expressed in your declared policy space and linearly mapped to
-  hardware 0–0.67 by the robot (§6).
+hardware 0–0.67 by the robot (§6).
 
 ### 4.1 Action spaces (selected by chunk width `W`)
 
@@ -138,13 +142,15 @@ The robot-side executor accepts several action spaces; every one is converted to
 same 14-D joint pipeline before execution. Per-arm blocks are ordered LEFT then RIGHT
 in all spaces. Quaternions are **[w, x, y, z]**.
 
-| `W` | space | per-arm layout (×2 arms) | robot-side handling |
-|---|---|---|---|
-| **14** | `joint_pos` (reference) | `[q1..q6 (rad, absolute), grip]` = 7 | executed directly through the joint pipeline (ensemble → filters → clamps) |
-| **16** | `cart_pos`, quat | `[pos xyz (m), quat wxyz, grip]` = 8 | end-effector (link_6) pose **in that arm's own base frame** → analytic IK, warm-started per step; on IK failure the arm holds its previous joints |
-| **20** | `cart_pos`, rot6d | `[pos xyz, rot6d, grip]` = 10 | same as above with 6-D rotation representation |
-| **38** | `joint_impedance` | `[q1..q6, grip, kp1..kp6, kd1..kd6]` = 19 | joint targets executed as in `joint_pos`; the chunk's kp/kd additionally command per-joint stiffness/damping gains |
-| **40** | `cart_impedance` | `[pos xyz, quat wxyz, K_cart(6), D_cart(6), grip]` = 20 | pose is IK'd to joints (stable path); for a pure pose policy prefer `cart_pos` — this space exists for gain-commanding policies |
+
+| `W`    | space                   | per-arm layout (×2 arms)                                | robot-side handling                                                                                                                               |
+| ------ | ----------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **14** | `joint_pos` (reference) | `[q1..q6 (rad, absolute), grip]` = 7                    | executed directly through the joint pipeline (ensemble → filters → clamps)                                                                        |
+| **16** | `cart_pos`, quat        | `[pos xyz (m), quat wxyz, grip]` = 8                    | end-effector (link_6) pose **in that arm's own base frame** → analytic IK, warm-started per step; on IK failure the arm holds its previous joints |
+| **20** | `cart_pos`, rot6d       | `[pos xyz, rot6d, grip]` = 10                           | same as above with 6-D rotation representation                                                                                                    |
+| **38** | `joint_impedance`       | `[q1..q6, grip, kp1..kp6, kd1..kd6]` = 19               | joint targets executed as in `joint_pos`; the chunk's kp/kd additionally command per-joint stiffness/damping gains                                |
+| **40** | `cart_impedance`        | `[pos xyz, quat wxyz, K_cart(6), D_cart(6), grip]` = 20 | pose is IK'd to joints (stable path); for a pure pose policy prefer `cart_pos` — this space exists for gain-commanding policies                   |
+
 
 Why several spaces exist: the executor separates *what the policy predicts* from *how
 the arm is driven*. Joint-space is the reference — it is what the platform's own
@@ -167,15 +173,17 @@ pipeline (§7) assume.
 
 ### Robot-side safety layer (applied to your actions, non-negotiable)
 
-| mechanism | default | effect |
-|---|---|---|
-| per-tick joint clamp | 0.05 rad/tick (configurable) | bounds per-tick joint motion |
-| absolute joint-velocity ceiling | 2.5 rad/s | hard cap independent of `control_hz` — raising `control_hz` cannot loosen the effective per-tick limit |
-| per-tick gripper clamp | 0.5 /tick (ceiling 25 /s) | bounds gripper slew |
-| outlier rejection | 0.5 rad | discards chunk values that jump implausibly vs. the blended stream |
-| temporal ensembling | decay 0.1 | overlapping chunks from successive inferences are blended (async mode) |
-| One-Euro smoothing | mincutoff 1.5, β 0.2 | final command smoothing |
-| gripper binarization | on (configurable) | snaps gripper to open/closed |
+
+| mechanism                       | default                      | effect                                                                                                 |
+| ------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------ |
+| per-tick joint clamp            | 0.05 rad/tick (configurable) | bounds per-tick joint motion                                                                           |
+| absolute joint-velocity ceiling | 2.5 rad/s                    | hard cap independent of `control_hz` — raising `control_hz` cannot loosen the effective per-tick limit |
+| per-tick gripper clamp          | 0.5 /tick (ceiling 25 /s)    | bounds gripper slew                                                                                    |
+| outlier rejection               | 0.5 rad                      | discards chunk values that jump implausibly vs. the blended stream                                     |
+| temporal ensembling             | decay 0.1                    | overlapping chunks from successive inferences are blended (async mode)                                 |
+| One-Euro smoothing              | mincutoff 1.5, β 0.2         | final command smoothing                                                                                |
+| gripper binarization            | on (configurable)            | snaps gripper to open/closed                                                                           |
+
 
 Design your policy to output smooth, physically plausible trajectories; the safety
 layer is a backstop, not a co-processor. A policy that fights the clamps will feel
@@ -187,24 +195,26 @@ sluggish and is out of contract.
 
 Ideal (contractual) values first; real-world deviations are footnoted.
 
-| rate | value | role |
-|---|---|---|
-| `control_hz` | **set it to your dataset rate** (per-policy, §6). Left unset, the platform falls back to **50** — never leave it unset for a 15 fps-built dataset (§8) | the ONLY rate your policy must care about: one action row consumed per tick |
-| command stream | 250 Hz | robot-internal linear interpolation between your action rows |
-| motor control | 500 Hz | robot-internal MIT-mode torque loop |
-| cameras | 15 fps | observation freshness bound |
-| inference | asynchronous, continuous | a worker infers as fast as your server responds; chunks are ensemble-blended |
+
+| rate           | value                                                                                                                                                  | role                                                                         |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| `control_hz`   | **set it to your dataset rate** (per-policy, §6). Left unset, the platform falls back to **50** — never leave it unset for a 15 fps-built dataset (§8) | the ONLY rate your policy must care about: one action row consumed per tick  |
+| command stream | 250 Hz                                                                                                                                                 | robot-internal linear interpolation between your action rows                 |
+| motor control  | 500 Hz                                                                                                                                                 | robot-internal MIT-mode torque loop                                          |
+| cameras        | 15 fps                                                                                                                                                 | observation freshness bound                                                  |
+| inference      | asynchronous, continuous                                                                                                                               | a worker infers as fast as your server responds; chunks are ensemble-blended |
+
 
 - **Async inference is the platform mode.** Your server should sustain roughly one
-  inference per 0.1–0.5 s. With chunk 50 at 15 Hz (3.3 s of future per chunk), even
-  0.5 s latency leaves a deep action buffer; at latency > ~1 s the blending degrades
-  and motion becomes seam-y.
+inference per 0.1–0.5 s. With chunk 50 at 15 Hz (3.3 s of future per chunk), even
+0.5 s latency leaves a deep action buffer; at latency > ~1 s the blending degrades
+and motion becomes seam-y.
 - Your chunk should cover **several seconds** of motion: `T / control_hz` well above
-  your worst-case inference latency. `T = 50` at 14–15 Hz gives ~3.3–3.6 s. ✔
+your worst-case inference latency. `T = 50` at 14–15 Hz gives ~3.3–3.6 s. ✔
 - Footnote on real rates: nominal rates carry a small real-world shortfall (loop
-  scheduling, transport): e.g. a 15 fps camera stream measures ~14.7 fps; a 150 Hz
-  internal loop measures ~142 Hz. Design to the nominal values; the shortfall is
-  ≤ ~5% and does not change any contract semantics.
+scheduling, transport): e.g. a 15 fps camera stream measures ~14.7 fps; a 150 Hz
+internal loop measures ~142 Hz. Design to the nominal values; the shortfall is
+≤ ~5% and does not change any contract semantics.
 
 ---
 
@@ -251,9 +261,9 @@ defaults:
 Data collected on the platform (teleoperation recordings) has this shape:
 
 - Control/state/action log at **150 Hz** nominal (measured ~142 Hz) — absolute joint
-  positions, commanded and measured, plus per-step camera-frame pairing.
+positions, commanded and measured, plus per-step camera-frame pairing.
 - Camera videos at the true unique-frame rate, currently **~15 fps**, 1280×720, three
-  views.
+views.
 - Per-episode instruction string.
 
 The one rule that connects training to deployment (motivated in §8):
@@ -293,7 +303,7 @@ policy draws means "1/15 s after the previous page."
 
 - dataset 15 Hz, `control_hz` 15 → the robot moves at demonstration speed. ✔
 - dataset 15 Hz, `control_hz` 30 → every motion plays **2× too fast** (surge,
-  clipping against safety clamps).
+clipping against safety clamps).
 - dataset 30 Hz, `control_hz` 15 → everything at **half speed**.
 
 The error is silent — no crash, no warning, just a robot that moves eerily wrong. It
@@ -301,13 +311,15 @@ is the single most common integration mistake; check this pair first.
 
 ### What the other rates actually do (and don't)
 
-| rate | what it REALLY affects | common misconception, debunked |
-|---|---|---|
-| camera fps (15) | freshness of the photo each inference sees (≤67 ms age) — and the ceiling on what dataset rate you can honestly build | "faster cameras make the robot faster" — no; the artist draws from one photo, however often photos arrive |
-| inference latency | buffer depth / blending quality (§5) | "slow inference makes slow motion" — no; the reader flips pages from the buffer at `control_hz` regardless; latency only risks the buffer running dry |
-| 250 Hz command stream | smoothness *between* your pages (interpolation) | "15 Hz control looks choppy" — no; the robot never moves in 15 Hz steps, it glides through them at 250 Hz |
-| 500 Hz motor loop | torque-level tracking | invisible to policies entirely |
-| your raw data log (150 Hz) | oversampled telemetry you *cut* the dataset from | "we logged at 150 Hz so deploy at 150 Hz" — no; what matters is the rate of the dataset you built, not of the log you cut it from. Down-sampling actions *together with the clock label* changes nothing about speed |
+
+| rate                       | what it REALLY affects                                                                                                | common misconception, debunked                                                                                                                                                                                       |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| camera fps (15)            | freshness of the photo each inference sees (≤67 ms age) — and the ceiling on what dataset rate you can honestly build | "faster cameras make the robot faster" — no; the artist draws from one photo, however often photos arrive                                                                                                            |
+| inference latency          | buffer depth / blending quality (§5)                                                                                  | "slow inference makes slow motion" — no; the reader flips pages from the buffer at `control_hz` regardless; latency only risks the buffer running dry                                                                |
+| 250 Hz command stream      | smoothness *between* your pages (interpolation)                                                                       | "15 Hz control looks choppy" — no; the robot never moves in 15 Hz steps, it glides through them at 250 Hz                                                                                                            |
+| 500 Hz motor loop          | torque-level tracking                                                                                                 | invisible to policies entirely                                                                                                                                                                                       |
+| your raw data log (150 Hz) | oversampled telemetry you *cut* the dataset from                                                                      | "we logged at 150 Hz so deploy at 150 Hz" — no; what matters is the rate of the dataset you built, not of the log you cut it from. Down-sampling actions *together with the clock label* changes nothing about speed |
+
 
 ### Intuition for the last row
 
@@ -321,7 +333,3 @@ works underneath you.
 
 ---
 
-*Contract version 1.1 · 2026-08-08 — supersedes the 2026-08-02 draft (corrected: wire
-codec map form, mandatory metadata handshake, state-gripper units, `control_hz`
-fallback). Interface changes will be versioned; numbers in §5 are re-measured on
-platform updates.*
