@@ -447,7 +447,7 @@
   font-size: 0.7rem;
   color: var(--ph-gold);
 }
-.soda-steps {
+.md-typeset ol.soda-steps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
   gap: 0.8rem;
