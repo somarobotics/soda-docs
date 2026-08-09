@@ -382,6 +382,82 @@
   .md-typeset .grid.cards > ul > li:hover { transform: none; }
 }
 
+/* ---------- group labels (home) ---------- */
+.soda-group {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 2.2rem 0 0.2rem;
+  font-family: var(--ph-font-data);
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--ph-mut);
+}
+.soda-group::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--ph-line);
+}
+.soda-links {
+  font-family: var(--ph-font-ui);
+  font-weight: 600;
+  margin-top: 0.8rem;
+}
+
+/* ---------- motion ---------- */
+html { scroll-behavior: smooth; }
+
+/* content entrance — replays on Material instant navigation */
+.md-content__inner {
+  animation: soda-enter 0.35s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+@keyframes soda-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* hero: staggered load sequence (home only) */
+.soda-hero > * {
+  animation: soda-enter 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+.soda-hero > :nth-child(1) { animation-delay: 0.05s; }
+.soda-hero > :nth-child(2) { animation-delay: 0.12s; }
+.soda-hero > :nth-child(3) { animation-delay: 0.19s; }
+.soda-hero > :nth-child(4) { animation-delay: 0.26s; }
+.soda-hero > :nth-child(5) { animation-delay: 0.33s; }
+.soda-hero > :nth-child(6) { animation-delay: 0.4s; }
+
+/* scroll reveal — classes managed by javascripts/motion.js, removed after
+   the transition so hover transitions return to their own timing */
+.will-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.5s cubic-bezier(0.2, 0.7, 0.3, 1),
+    transform 0.5s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.will-reveal.in-view {
+  opacity: 1;
+  transform: none;
+}
+.md-typeset .grid.cards > ul > li:nth-child(2).will-reveal { transition-delay: 0.07s; }
+.md-typeset .grid.cards > ul > li:nth-child(3).will-reveal { transition-delay: 0.14s; }
+.md-typeset .grid.cards > ul > li:nth-child(4).will-reveal { transition-delay: 0.21s; }
+.soda-stats > div:nth-child(2).will-reveal { transition-delay: 0.07s; }
+.soda-stats > div:nth-child(3).will-reveal { transition-delay: 0.14s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .md-content__inner,
+  .soda-hero > * { animation: none; }
+  .will-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* ---------- misc polish ---------- */
 .md-typeset img { border-radius: 4px; border: 1px solid var(--ph-line); }
 .md-nav__item .md-nav__link--active { color: var(--ph-gold); }

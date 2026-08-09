@@ -1,10 +1,5 @@
 # Control Modes
 
-!!! abstract "Purpose:"
-    Understand what a control mode does to the arms and how to switch it.
-    **Audience:** Operators running a SODA bimanual cell.
-
-
 A **control mode** decides how *firmly* an arm holds its target position.
 
 - **Stiff (position)** — the arm locks onto its target and resists being pushed. Accurate, but it will fight anything in its way.
@@ -22,11 +17,13 @@ Arms boot in **`position` (stiff)** mode unless the unit's `/opt/robot/config/si
 
 `stiffness_scale` is the single dial for how firm an arm feels — it scales both the position gain and damping together.
 
-| Value | Feel |
-|---|---|
-| `1.0` | Default firmness |
+
+| Value                | Feel                      |
+| -------------------- | ------------------------- |
+| `1.0`                | Default firmness          |
 | `< 1.0` (e.g. `0.1`) | Softer, gives more easily |
-| `> 1.0` | Stiffer, resists more |
+| `> 1.0`              | Stiffer, resists more     |
+
 
 In compliant mode this sets the compliance level. Softer = safer and easier to hand-guide; stiffer = more accurate tracking.
 
@@ -35,6 +32,7 @@ In compliant mode this sets the compliance level. Softer = safer and easier to h
 Any of these work — pick whichever fits the moment.
 
 **CLI (this session):**
+
 ```bash
 soda mode position              # stiff hold
 soda mode impedance 0.3         # compliant at 30% stiffness
@@ -43,23 +41,27 @@ soda mode impedance 0.3         # compliant at 30% stiffness
 **UI:** use the control-mode selector on the arm panel.
 
 **Boot default (`site.yaml`, per arm):**
+
 ```yaml
 arms:
   left:
     control_mode: joint_impedance   # opt into a compliant boot (factory default: position)
     stiffness_scale: 1.0
 ```
+
 The UI / CLI / API change the mode at runtime; `site.yaml` only sets where the arm starts.
 
-See [`./soda-cli-reference.md`](./soda-cli-reference.md) for full command syntax.
+See [soda-cli-reference.md](./soda-cli-reference.md) for full command syntax.
 
 ## Which mode when
 
-| You want to… | Use |
-|---|---|
+
+| You want to…                                     | Use                                         |
+| ------------------------------------------------ | ------------------------------------------- |
 | Teleop, demo collection, tasks that touch things | `joint_impedance` (compliant) — recommended |
-| Hand-guide or free-pose the arm | `joint_impedance`, low `stiffness_scale` |
-| Precise, repeatable positioning with no contact | `position` (stiff) |
+| Hand-guide or free-pose the arm                  | `joint_impedance`, low `stiffness_scale`    |
+| Precise, repeatable positioning with no contact  | `position` (stiff)                          |
+
 
 ## Modes you don't manage
 
@@ -68,4 +70,4 @@ See [`./soda-cli-reference.md`](./soda-cli-reference.md) for full command syntax
 
 ---
 
-For the engineering deep-dive (the one MIT law, gain regimes, REST surface), see [`../developer/control-modes.md`](shipped-docs.md).
+For the engineering deep-dive (the one MIT law, gain regimes, REST surface), see [../developer/control-modes.md](shipped-docs.md).

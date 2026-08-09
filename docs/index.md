@@ -30,6 +30,8 @@ curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | bash
   <div><b>3 cameras</b><span>RealSense, hand-eye calibrated &lt; 5 mm</span></div>
 </div>
 
+<div class="soda-group">start here</div>
+
 <div class="grid cards" markdown>
 
 -   :material-rocket-launch:{ .lg .middle } **Getting Started**
@@ -44,9 +46,15 @@ curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | bash
 
     ---
 
-    What each stop *actually* does, SAFE-HOLD's limits, rules for unattended runs.
+    What each stop *actually* does, and the operating rules.
 
     [:material-arrow-right-thin: safety](safety.md)
+
+</div>
+
+<div class="soda-group">operate</div>
+
+<div class="grid cards" markdown>
 
 -   :material-tune:{ .lg .middle } **Control Modes**
 
@@ -64,6 +72,20 @@ curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | bash
 
     [:material-arrow-right-thin: soda-cli-reference](soda-cli-reference.md)
 
+-   :material-update:{ .lg .middle } **Software Updates**
+
+    ---
+
+    Silent OTA every 30 min, idle-aware, auto-rollback. Three recovery commands.
+
+    [:material-arrow-right-thin: updates](updates.md)
+
+</div>
+
+<div class="soda-group">your policy</div>
+
+<div class="grid cards" markdown>
+
 -   :material-brain:{ .lg .middle } **Run Your Policy**
 
     ---
@@ -72,28 +94,58 @@ curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | bash
 
     [:material-arrow-right-thin: running-your-policy](running-your-policy.md)
 
--   :material-controller:{ .lg .middle } **Teleop & Data Collection**
+-   :material-file-sign:{ .lg .middle } **Serving Contract**
+
+    ---
+
+    The wire protocol, action spaces, timing — everything a policy server must speak.
+
+    [:material-arrow-right-thin: policy-serving](policy-serving.md)
+
+</div>
+
+<div class="soda-group">collect data</div>
+
+<div class="grid cards" markdown>
+
+-   :material-controller:{ .lg .middle } **Teleop & Recording**
 
     ---
 
     Quest dual-arm teleop → replayable HDF5 episodes.
-    Plus [headset setup](quest-setup.md) and [where recordings go](recordings.md).
 
     [:material-arrow-right-thin: data-collection-teleop](data-collection-teleop.md)
 
--   :material-update:{ .lg .middle } **Updates**
+-   :material-hand-back-right:{ .lg .middle } **DAgger Corrections**
 
     ---
 
-    Silent OTA every 30 min, idle-aware, auto-rollback. Three recovery commands.
+    Grab an arm mid-rollout; corrections are labelled per step in the same episode.
 
-    [:material-arrow-right-thin: updates](updates.md)
+    [:material-arrow-right-thin: dagger](dagger.md)
 
--   :material-book-open-variant:{ .lg .middle } **Reference**
+-   :material-virtual-reality:{ .lg .middle } **Quest Headset Setup**
 
     ---
 
-    [Specifications](specifications.md) · [glossary](glossary.md) ·
-    [integration & handover](shipped-docs.md)
+    One-time developer-mode prep, USB authorization, headset troubleshooting.
+
+    [:material-arrow-right-thin: quest-setup](quest-setup.md)
+
+-   :material-folder-play:{ .lg .middle } **Where Recordings Go**
+
+    ---
+
+    Episodes vs debug telemetry vs raw topic dumps — one map.
+
+    [:material-arrow-right-thin: recordings](recordings.md)
 
 </div>
+
+<div class="soda-group">reference</div>
+
+<p class="soda-links">
+<a href="specifications/">Specifications</a> ·
+<a href="glossary/">Glossary</a> ·
+<a href="shipped-docs/">Integration &amp; Handover</a>
+</p>
