@@ -32,25 +32,23 @@ curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | bash
 
 <div class="soda-group">start here</div>
 
-<div class="grid cards" markdown>
+<a class="soda-feature" href="getting-started/">
+  <div class="soda-feature-head">
+    <strong>Getting Started</strong>
+    <span>unbox → running robot → the day-to-day routine</span>
+    <em>open the guide →</em>
+  </div>
+  <ol class="soda-steps">
+    <li><b>01 · install</b><span>One command on the robot host:<br><code>curl …/bootstrap.sh | bash</code></span></li>
+    <li><b>02 · license</b><span>Email the shown fingerprint to your vendor; the installer takes the returned <code>license.json</code></span></li>
+    <li><b>03 · launch</b><span>Open <code>http://&lt;robot&gt;:8079</code> in a browser and click <strong>Launch</strong></span></li>
+  </ol>
+</a>
 
--   :material-rocket-launch:{ .lg .middle } **Getting Started**
-
-    ---
-
-    Unbox → one-command install → running robot, and the day-to-day routine.
-
-    [:material-arrow-right-thin: getting-started](getting-started.md)
-
--   :material-alert-octagon:{ .lg .middle } **Safety**
-
-    ---
-
-    What each stop *actually* does, and the operating rules.
-
-    [:material-arrow-right-thin: safety](safety.md)
-
-</div>
+<a class="soda-safety" href="safety/">
+  <b>safety</b>
+  <span>Before the first powered motion, read what each stop <em>actually</em> does — and the operating rules.</span>
+</a>
 
 <div class="soda-group">operate</div>
 

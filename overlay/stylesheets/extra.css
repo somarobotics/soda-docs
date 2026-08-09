@@ -405,6 +405,96 @@
   margin-top: 0.8rem;
 }
 
+/* ---------- start-here feature (home) ---------- */
+.md-typeset a.soda-feature {
+  display: block;
+  margin-top: 0.8rem;
+  padding: 1.1rem 1.2rem 1.2rem;
+  border: 1px solid var(--ph-line2);
+  border-radius: 8px;
+  background: var(--ph-panel);
+  color: var(--ph-txt);
+  transition: border-color 0.15s, transform 0.15s;
+}
+.md-typeset a.soda-feature:hover,
+.md-typeset a.soda-feature:focus-visible {
+  border-color: var(--ph-gold);
+  transform: translateY(-2px);
+  color: var(--ph-txt);
+}
+.soda-feature-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.8rem;
+}
+.soda-feature-head strong {
+  font-family: var(--ph-font-ui);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.soda-feature-head span { color: var(--ph-mut); font-size: 0.7rem; }
+.soda-feature-head em {
+  margin-left: auto;
+  font-style: normal;
+  font-family: var(--ph-font-ui);
+  font-weight: 600;
+  font-size: 0.7rem;
+  color: var(--ph-gold);
+}
+.soda-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.8rem;
+  list-style: none;
+  margin: 0.9rem 0 0 !important;
+  padding: 0 !important;
+}
+.soda-steps li {
+  margin: 0 !important;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--ph-line);
+  border-radius: 6px;
+  background: var(--ph-panel2);
+}
+.soda-steps b {
+  display: block;
+  font-family: var(--ph-font-data);
+  font-size: 0.58rem;
+  font-weight: 600;
+  color: var(--ph-gold);
+  margin-bottom: 0.25rem;
+}
+.soda-steps span { font-size: 0.66rem; line-height: 1.5; color: var(--ph-txt); }
+.soda-steps code { font-size: 0.6rem; }
+
+.md-typeset a.soda-safety {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin-top: 0.7rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--ph-line);
+  border-left: 3px solid var(--ph-gold);
+  border-radius: 4px;
+  background: var(--ph-panel);
+  color: var(--ph-txt);
+  font-size: 0.7rem;
+  transition: border-color 0.15s;
+}
+.md-typeset a.soda-safety:hover,
+.md-typeset a.soda-safety:focus-visible {
+  border-color: var(--ph-brass);
+  border-left-color: var(--ph-gold);
+  color: var(--ph-txt);
+}
+.soda-safety b {
+  font-family: var(--ph-font-data);
+  font-size: 0.58rem;
+  font-weight: 600;
+  color: var(--ph-gold);
+}
+
 /* ---------- motion ---------- */
 html { scroll-behavior: smooth; }
 

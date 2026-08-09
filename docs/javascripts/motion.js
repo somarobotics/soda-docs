@@ -24,6 +24,8 @@
         ".md-typeset .grid.cards > ul > li",
         ".soda-stats > div",
         ".soda-group",
+        ".soda-feature",
+        ".soda-safety",
         ".md-typeset .admonition",
         ".md-typeset h2",
       ].join(", ")
