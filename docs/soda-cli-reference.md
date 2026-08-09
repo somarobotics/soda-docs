@@ -52,40 +52,13 @@ Runtime overrides (safe while moving). The **boot** defaults come from `site.yam
 (`arms.<side>.control_mode`, `stiffness_scale`; factory default mode: `position`).
 One scale sets kp+kd together; two scales set them separately (kd defaults to kp).
 
-**1 · Pick a mode**
-
 | command | behaviour |
 |---|---|
 | `soda mode position`  | stiff firmware position hold — runtime kp/kd do **not** apply here |
 | `soda mode impedance` | compliant joint-impedance PD — this is the mode where kp/kd matter |
 
-**2 · Set the gains** (only take effect in `impedance`)
-
-Scales are relative to the firmware defaults — **arm joints only, the gripper is never
-touched**:
-
-```
-firmware default gains (per arm joint)
-  kp = [200  200  200  75  15  15 ]
-  kd = [12.5 12.5 12.5 6   0.31 0.31]
-```
-
-| command | kp | kd | use |
-|---|---|---|---|
-| `soda mode impedance`         | ×1.0 | ×1.0 | enter at default gains |
-| `soda mode impedance 0.3`     | ×0.3 | ×0.3 | one knob — softer / compliant |
-| `soda mode impedance 0.3 1.0` | ×0.3 | ×1.0 | separate — compliant tracking + full damping |
-| `soda mode stiffness 0.3`     | ×0.3 | ×0.3 | change gains **without** switching mode |
-
-**3 · Per-joint gains** (a whole vector, not one global scale) — call the API directly:
-
-```
-API=http://localhost:8080          # backend (see top of this page)
-curl -X POST $API/robot/stiffness -H 'content-type: application/json' \
-     -d '{"arm":"left","kp":[120,120,120,45,9,9],"kd":[7,7,7,3,0.2,0.2]}'
-```
-
-Read back the active gains any time with `soda state` or `GET /robot/control_mode`.
+Gain tables (scales, firmware defaults, per-joint vectors via the API):
+[control-modes.md](control-modes.md).
 
 ## Teleop + data collection
 

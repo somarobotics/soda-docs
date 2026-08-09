@@ -53,6 +53,35 @@ The UI / CLI / API change the mode at runtime; `site.yaml` only sets where the a
 
 See [soda-cli-reference.md](./soda-cli-reference.md) for full command syntax.
 
+## Setting the gains
+
+Gains only take effect in `impedance` (in `position` the firmware holds stiff and runtime
+kp/kd do **not** apply). Scales are relative to the firmware defaults — **arm joints only,
+the gripper is never touched**:
+
+```
+firmware default gains (per arm joint)
+  kp = [200  200  200  75  15  15 ]
+  kd = [12.5 12.5 12.5 6   0.31 0.31]
+```
+
+| command | kp | kd | use |
+|---|---|---|---|
+| `soda mode impedance`         | ×1.0 | ×1.0 | enter at default gains |
+| `soda mode impedance 0.3`     | ×0.3 | ×0.3 | one knob — softer / compliant |
+| `soda mode impedance 0.3 1.0` | ×0.3 | ×1.0 | separate — compliant tracking + full damping |
+| `soda mode stiffness 0.3`     | ×0.3 | ×0.3 | change gains **without** switching mode |
+
+**Per-joint gains** (a whole vector, not one global scale) — call the API directly:
+
+```
+API=http://localhost:8080          # backend
+curl -X POST $API/robot/stiffness -H 'content-type: application/json' \
+     -d '{"arm":"left","kp":[120,120,120,45,9,9],"kd":[7,7,7,3,0.2,0.2]}'
+```
+
+Read back the active gains any time with `soda state` or `GET /robot/control_mode`.
+
 ## Which mode when
 
 
