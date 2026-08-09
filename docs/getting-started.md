@@ -31,7 +31,8 @@ The whole flow is idempotent — re-run the same command any time and it skips f
 
 **Architecture**: this image is multi-arch (linux/amd64 + linux/arm64). x86_64 and Jetson / ARM customer machines both work out of the box — `docker pull` auto-selects the right one. M-series Macs are not supported as customer machines (no native Linux GPU access).
 
-If anything fails, see the "Container & startup" section of [troubleshooting.md](troubleshooting.md).
+If anything fails, run the built-in diagnostic:
+`docker exec -it robot-backend-1 python -m soda_os.tools.doctor`.
 
 ### Inspect-first (if you'd rather not `curl | bash`)
 
@@ -49,8 +50,7 @@ If your environment blocks `curl | bash` outright, or you want full control:
 # (only needed if `docker ps` shows "permission denied")
 sudo usermod -aG docker $USER
 # Then reboot or fully log out of your desktop session before continuing.
-# Opening a new terminal does NOT refresh group membership —
-# see troubleshooting.md, "Container & startup".
+# Opening a new terminal does NOT refresh group membership.
 
 VERSION=$(curl -fsSL https://somarobotics.github.io/soda-ota-channels/stable.txt)
 docker pull ghcr.io/somarobotics/soda-app:$VERSION
@@ -233,7 +233,6 @@ docker compose -f /opt/robot/docker-compose.yml restart
 | Doc                                                                      | When to read                                                             |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
 | [safety](safety.md)                                                      | What the software STOP does and does not guarantee, e-stop behavior      |
-| [troubleshooting](troubleshooting.md)                                    | Anything goes wrong — install fails, container won't start, rate too low |
 | [soda CLI reference](soda-cli-reference.md)                              | Full `soda` command list and flags                                       |
 | [software updates](updates.md)                                           | The update / rollback flow in detail                                     |
 | [hand-eye calibration](shipped-docs.md)             | Hand-eye calibration walkthrough                                         |

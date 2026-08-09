@@ -18,8 +18,8 @@ Each tick:
 4. **If the health check fails, it automatically rolls back** to the last known-good version — using the copy already on the robot, so this works even with no internet.
 
 Intermittent network is fine: a failed or interrupted download just retries next tick. The
-outbound endpoints the updater needs are listed in
-[network-requirements.md](network-requirements.md).
+updater needs outbound access to `somarobotics.github.io` (channel file) and `ghcr.io`
+(image pulls); everything else is local.
 
 ## Commands you may occasionally use
 
@@ -63,5 +63,4 @@ Everything under `/opt/robot/**` is stored on the robot itself and is **never to
 
 ---
 
-- Something went wrong? See [troubleshooting](troubleshooting.md).
 - Vendor / release-engineering side (channels, publishing, fleet-wide rollback): [../developer/vendor/release-workflow.md](shipped-docs.md).

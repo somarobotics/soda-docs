@@ -134,5 +134,3 @@ The initial USB authorization (step 4) is still required once.
 | Teleop starts but poses freeze / controllers stop responding | The headset app wedged | `adb shell am force-stop com.rail.oculus.teleop`, then `soda teleop start` again — relaunch is automatic. |
 | You need a clean slate for the headset app | Corrupt install | `adb uninstall com.rail.oculus.teleop` — the next `soda teleop start` reinstalls the bundled app automatically. |
 | Arms track poorly / jump between clutch presses | Controllers left the headset cameras' view | Keep the controllers in front of the headset; re-clutch to re-anchor (never jumps the arm). |
-
-Anything else: [troubleshooting.md](troubleshooting.md).

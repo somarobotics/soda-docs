@@ -90,19 +90,11 @@ curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | bash
 
     [:material-arrow-right-thin: updates](updates.md)
 
--   :material-wrench:{ .lg .middle } **Troubleshooting**
-
-    ---
-
-    Symptom → fix tables, including which behaviors are by-design.
-
-    [:material-arrow-right-thin: troubleshooting](troubleshooting.md)
-
 -   :material-book-open-variant:{ .lg .middle } **Reference**
 
     ---
 
-    [Specifications](specifications.md) · [network requirements](network-requirements.md) ·
-    [glossary](glossary.md) · [integration & handover](shipped-docs.md)
+    [Specifications](specifications.md) · [glossary](glossary.md) ·
+    [integration & handover](shipped-docs.md)
 
 </div>

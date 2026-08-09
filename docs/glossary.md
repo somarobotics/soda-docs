@@ -46,7 +46,7 @@ See [integration/policy-io-contract.md](shipped-docs.md).
 
 **OTA** — over-the-air update. The unit checks its channel file (default `stable.txt`) every
 30 minutes (first check ~2 min after boot) and pulls new images from `ghcr.io`.
-See [updates.md](updates.md) · [network-requirements.md](network-requirements.md).
+See [updates.md](updates.md).
 
 **Plane-1** — the managed / supervisory plane: soda_os owns the loop; HTTP + WebSocket on
 `:8079` / `:8080`; the Web UI, `soda` CLI, and managed policy runner live here.

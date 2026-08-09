@@ -68,5 +68,4 @@ See [`./soda-cli-reference.md`](./soda-cli-reference.md) for full command syntax
 
 ---
 
-Arm won't move, feels wrong, or a mode won't switch? See [`./troubleshooting.md`](./troubleshooting.md).
 For the engineering deep-dive (the one MIT law, gain regimes, REST surface), see [`../developer/control-modes.md`](shipped-docs.md).
