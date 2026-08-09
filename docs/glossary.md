@@ -50,7 +50,7 @@ See [updates.md](updates.md).
 
 **Plane-1** — the managed / supervisory plane: soda_os owns the loop; HTTP + WebSocket on
 `:8079` / `:8080`; the Web UI, `soda` CLI, and managed policy runner live here.
-See [integration/ports-and-planes.md](shipped-docs.md).
+See [integration/README.md](shipped-docs.md).
 
 **Plane-2** — the real-time device plane: your own client owns the 500 Hz–1 kHz loop directly
 on the loopback ZMQ device sockets.

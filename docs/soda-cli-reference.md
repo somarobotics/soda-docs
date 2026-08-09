@@ -1,13 +1,5 @@
 # SODA headless CLI (`soda`)
 
-One script, curl over the always-on HTTP API (launcher `:8079`, backend `:8080`).
-Runs on the robot host **or any laptop on the network**. `soda help` lists everything.
-Most commands print the backend's JSON reply; `keys`, `teleop`/`collect`, `replay play`,
-`calibrate` are interactive (take over the terminal until you quit). `⚠` = moves the arms.
-
-Endpoints are overridable via env vars: `SODA_API` (default `:8080`), `SODA_LAUNCHER`
-(`:8079`), `SODA_CONTAINER` (`robot-backend-1`).
-
 ---
 
 ## Stack
@@ -18,13 +10,6 @@ soda status            # stack + policy status (mode, per-service health)
 soda version           # CLI + backend versions (warns on a mismatch)
 soda stop              # STOP — kill every stack process   (alias: soda estop)
 ```
-
-`soda stop` = `soda estop` = `POST /launcher/estop`: kills **every** stack process
-(backend, arm/cam servers, teleop, policy clients). The **launcher survives**, so `:8079`
-stays reachable and `soda up` (or the UI's Launch) restarts the stack. Arm torque is cut
-by the firmware watchdog within about half a second and the arms **sag under gravity** —
-it is not a mechanical brake. See [safety](safety.md). To stop **only the policy**, see
-[Policy](#policy) below.
 
 **Zero-gravity float** — go limp so you can hand-move the arms:
 
@@ -38,7 +23,7 @@ soda zerog-off --recover   # end that launcher float
 ## Robot
 
 ```
-soda home                                     # ⚠ both arms → home (smooth)
+soda home                                     # both arms → home (smooth)
 soda gripper open|close [left|right|both]     # default both
 soda state                                    # joints, EE pose, control_mode (JSON)
 soda move joints '{"left":[..6..]}'           # ⚠ joint target
@@ -52,10 +37,12 @@ Runtime overrides (safe while moving). The **boot** defaults come from `site.yam
 (`arms.<side>.control_mode`, `stiffness_scale`; factory default mode: `position`).
 One scale sets kp+kd together; two scales set them separately (kd defaults to kp).
 
-| command | behaviour |
-|---|---|
+
+| command               | behaviour                                                          |
+| --------------------- | ------------------------------------------------------------------ |
 | `soda mode position`  | stiff firmware position hold — runtime kp/kd do **not** apply here |
 | `soda mode impedance` | compliant joint-impedance PD — this is the mode where kp/kd matter |
+
 
 Gain tables (scales, firmware defaults, per-joint vectors via the API):
 [control-modes.md](control-modes.md).
@@ -70,16 +57,6 @@ soda teleop start | console    # start Quest teleop → the console below / re-a
 soda teleop stop | status
 ```
 
-`soda collect` is the scriptable face of the same recorder — plus its own console:
-
-```
-soda collect [console]           # re-attach the live console
-soda collect start [--task "…"]  # start recording an episode (optional task text)
-soda collect save                # save as SUCCESS and stop    (alias: soda collect stop)
-soda collect discard             # discard the episode (FAILURE)
-soda collect list                # list episodes
-```
-
 Console — single keypress, no Enter:
 
 ```
@@ -89,7 +66,7 @@ f  discard (FAILURE)                                      l  list episodes   · 
 q  or  Ctrl-C   →   stop teleop AND quit
 ```
 
-Episodes → **`/opt/robot/recordings/hdf5/<timestamp>/`** (cameras `.mp4` + state/action HDF5).
+Episodes → `**/opt/robot/recordings/hdf5/<timestamp>/**` (cameras `.mp4` + state/action HDF5).
 **Saving freezes the control loop while it encodes — hold still until you see `✓ ready`.**
 
 ## Teach (hand-guide)
@@ -101,31 +78,20 @@ soda teach on | off | status     # arms go compliant → move them by hand; off 
 ## Policy
 
 ```
-soda run <id> [prompt...] [--probe|--dry-run] [-i|-d] [--record] [--dagger]
+soda run <id> [prompt...] [--probe|--dry-run] [--record] [--dagger]
                                  # bring-up + start in one command
 soda pause | resume              # policy-level: pause holds without ending; resume re-plans
                                  # from the current pose
 soda list | params '<json>'      # list policies · live-tune knobs
-soda keys                        # interactive barge-in console:
-                                 #   SPACE pause↔resume · s stop · f clear-fault · E ESTOP · q quit
-soda record start | stop [ok|fail] [task...]
-                                 # session recorder — what `run --record` uses under the hood.
-                                 # `stop fail` DISCARDS the whole episode — under --dagger
-                                 # that includes every correction you grabbed
 
 ```
 
 `soda run` flags:
 
-- **`--record`** — starts episode recording **and** implies the live console.
-- **`--dagger`** — implies `--record`; records at 150 Hz (teleop's step cadence) and enables sticky-clutch Quest
-  takeover. The whole rollout is saved as **one** episode; takeover spans are flagged
-  per step (`action/controller_info/intervening`), not split into separate files.
-- **`-i`** / **`-d`** — force / suppress the console. `-d` detaches even with `--record`
-  (recording still runs). Default: the console auto-attaches only for a **live** run on a TTY.
-
-To stop **only the policy**: `q`/Ctrl-C in the run console, or `s` in `soda keys`.
-`soda stop` is not that — it kills the whole stack (see [Stack](#stack)).
+- `**--record**` — starts episode recording **and** implies the live console.
+- `**--dagger`** — implies `--record`; records at 150 Hz (teleop's step cadence) and enables sticky-clutch Quest  
+takeover. The whole rollout is saved as **one** episode; takeover spans are flagged  
+per step (`action/controller_info/intervening`), not split into separate files.
 
 ## Replay ⚠ moves the arms
 
@@ -166,8 +132,7 @@ Full name is `<side>/<name>`, `<side>` = `left` or `right`. Payload =
 
 
 On real hardware the current release publishes `pos` / `vel` / `eff` / `joint_states` only;
-`ee_pose` / `wrench` / `tau_ext` stream on the sim device — see
-[ports & planes](shipped-docs.md).
+`ee_pose` / `wrench` / `tau_ext` stream on the sim device.
 
 ```
 soda stream --sub left/wrench        # one topic
@@ -179,7 +144,7 @@ soda stream --sub ""                 # everything
 
 `cam` = all three, `cam/side` = side, `cam/left` matches `cam/left_wrist`. Camera **topics** are `left_wrist`, `right_wrist`
 (⚠ **not** `left` / `right`), and `side` — a different namespace from the short names
-`soda cam` takes; see the [camera naming table](shipped-docs.md).
+`soda cam` takes.
 
 `soda stream` **prints** by default — add one flag to view or keep the data (they combine, e.g.
 `--http --record` views *and* records):
@@ -202,9 +167,8 @@ recordings/topics/<ts>/
 Stop with **Ctrl-C** — the mp4/meta are written **on close**, so don't `kill -9`. `--record` with no
 dir uses the default (see [recordings](recordings.md)).
 
-**`(no frames)`?** A topic streams only if its `pub_port` is in `site.yaml` — arms
-`arms.<side>.pub_port` (12348 / 12349), cameras `cameras.<name>.pub_port` (per-unit values — see
-[ports-and-planes](shipped-docs.md)). Check the `endpoints=[…]` line it prints on
+`**(no frames)`?** A topic streams only if its `pub_port` is in `site.yaml` — arms
+`arms.<side>.pub_port` (12348 / 12349), cameras `cameras.<name>.pub_port` (per-unit values in `site.yaml`). Check the `endpoints=[…]` line it prints on
 start, or point at ports directly: `soda stream --sub cam --http 8090 --pub-ports <p1>,<p2>,<p3>`.
 (Sim cameras stream ~1–5 Hz.)
 
@@ -224,13 +188,13 @@ An `nvidia-smi`-style panel for the control loop. `-l N` refreshes like `nvidia-
 
 **Which one:**
 
-- **`--rate`** — the number to trust for loop rate / jitter / sensor→host: a lean passive subscriber
+- `**--rate`** — the number to trust for loop rate / jitter / sensor→host: a lean passive subscriber
 that keeps up with the full publish rate. Use it for acceptance, any time, even mid-rollout.
-- **`--probe`** — actively round-trips the arm's REQ/REP control channel; reliable **only as the sole
+- `**--probe**` — actively round-trips the arm's REQ/REP control channel; reliable **only as the sole
 client**. With the backend running it is contended and undercounts (it warns, and points you to `--rate`).
-- **`--cmd-to-motion`** — physically nudges one joint (~0.05 rad) and times to motion onset. Clear the
+- `**--cmd-to-motion`** — physically nudges one joint (~0.05 rad) and times to motion onset. Clear the
 workspace; it requires the explicit `--i-understand-this-moves-the-robot` flag.
-- **`soda smi`** (no flag) — the health panel (CPU / cores / loop pinning); confirm the RT setup is
+- `**soda smi**` (no flag) — the health panel (CPU / cores / loop pinning); confirm the RT setup is
 active. **Not** the loop-rate source — that is `--rate`.
 
 ## Calibration ⚠ moves the arms
@@ -256,6 +220,4 @@ soda fault | clear                               # show / clear latched faults
 ```
 
 `soda cam` takes the **short** camera names `left|right|side`; the stream topics
-(`left_wrist` / `right_wrist` / `side`) are a different namespace — see the
-[camera naming table](shipped-docs.md).
-
+(`left_wrist` / `right_wrist` / `side`) are a different namespace.
