@@ -406,7 +406,8 @@
 }
 
 /* ---------- start-here feature (home) ---------- */
-.md-typeset a.soda-feature {
+.md-typeset .soda-feature {
+  position: relative;
   display: block;
   margin-top: 0.8rem;
   padding: 1.1rem 1.2rem 1.2rem;
@@ -416,11 +417,16 @@
   color: var(--ph-txt);
   transition: border-color 0.15s, transform 0.15s;
 }
-.md-typeset a.soda-feature:hover,
-.md-typeset a.soda-feature:focus-visible {
+.md-typeset .soda-feature:hover,
+.md-typeset .soda-feature:focus-within {
   border-color: var(--ph-gold);
   transform: translateY(-2px);
-  color: var(--ph-txt);
+}
+/* stretched link — the whole panel is clickable */
+.soda-feature-head a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 .soda-feature-head {
   display: flex;
@@ -434,9 +440,8 @@
   font-weight: 700;
 }
 .soda-feature-head span { color: var(--ph-mut); font-size: 0.7rem; }
-.soda-feature-head em {
+.md-typeset .soda-feature-head a {
   margin-left: auto;
-  font-style: normal;
   font-family: var(--ph-font-ui);
   font-weight: 600;
   font-size: 0.7rem;
@@ -468,7 +473,8 @@
 .soda-steps span { font-size: 0.66rem; line-height: 1.5; color: var(--ph-txt); }
 .soda-steps code { font-size: 0.6rem; }
 
-.md-typeset a.soda-safety {
+.md-typeset .soda-safety {
+  position: relative;
   display: flex;
   align-items: baseline;
   gap: 0.7rem;
@@ -482,11 +488,16 @@
   font-size: 0.7rem;
   transition: border-color 0.15s;
 }
-.md-typeset a.soda-safety:hover,
-.md-typeset a.soda-safety:focus-visible {
+.md-typeset .soda-safety:hover,
+.md-typeset .soda-safety:focus-within {
   border-color: var(--ph-brass);
   border-left-color: var(--ph-gold);
-  color: var(--ph-txt);
+}
+.md-typeset .soda-safety a { color: var(--ph-txt); }
+.soda-safety a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 .soda-safety b {
   font-family: var(--ph-font-data);

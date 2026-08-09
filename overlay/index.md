@@ -32,23 +32,23 @@ curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | bash
 
 <div class="soda-group">start here</div>
 
-<a class="soda-feature" href="getting-started/">
+<div class="soda-feature">
   <div class="soda-feature-head">
     <strong>Getting Started</strong>
     <span>unbox → running robot → the day-to-day routine</span>
-    <em>open the guide →</em>
+    <a href="getting-started/">open the guide →</a>
   </div>
   <ol class="soda-steps">
     <li><b>01 · install</b><span>One command on the robot host:<br><code>curl …/bootstrap.sh | bash</code></span></li>
     <li><b>02 · license</b><span>Email the shown fingerprint to your vendor; the installer takes the returned <code>license.json</code></span></li>
     <li><b>03 · launch</b><span>Open <code>http://&lt;robot&gt;:8079</code> in a browser and click <strong>Launch</strong></span></li>
   </ol>
-</a>
+</div>
 
-<a class="soda-safety" href="safety/">
+<div class="soda-safety">
   <b>safety</b>
-  <span>Before the first powered motion, read what each stop <em>actually</em> does — and the operating rules.</span>
-</a>
+  <span>Before the first powered motion, read <a href="safety/">what each stop <em>actually</em> does — and the operating rules</a>.</span>
+</div>
 
 <div class="soda-group">operate</div>
 
