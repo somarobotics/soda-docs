@@ -1,9 +1,5 @@
 # Data Collection — Quest Dual-Arm Teleop
 
-!!! abstract "Purpose / Audience:"
-    Operator guide to driving both arms with two Meta Quest 3 controllers and recording demonstration episodes for training.
-
-
 Two controllers, two arms: the **right** controller drives the **right** arm, the **left** drives the **left**. You hold the clutch to move, release to let go, and record each attempt as one episode (HDF5 + video).
 
 ---

@@ -1,11 +1,5 @@
 # DAgger — Correcting a Policy Mid-Rollout
 
-!!! abstract "Purpose / Audience:"
-    For operators collecting correction data and engineers building
-    the retraining dataset. How takeover works, what gets recorded, and how to extract the
-    human-driven spans.
-
-
 Run your policy, watch it work, and **grab an arm the moment it goes wrong** — your
 correction is recorded in the same episode, labelled per step. Retrain on the corrections
 (HG-DAgger) and the policy stops making that mistake.
@@ -26,12 +20,14 @@ conventions): [quest-setup.md](quest-setup.md) ·
 
 **Controller — per arm, the other arm stays with the policy:**
 
-| Input | Effect |
-|---|---|
-| **Grip** (hold) | take the arm — it follows your hand while held (sticky clutch) |
-| release Grip | the arm **parks** where it is (ratchet) — re-centre your hand, re-grab to continue |
-| **A** (right) / **X** (left) | hand that arm **back to the policy** |
-| **Trigger** | gripper. At takeover it is **locked**: squeezing tighter passes through, opening below where the gripper stood cannot happen — grabbing the clutch with a slack trigger never drops a held object. One full squeeze-and-release unlocks direct control (the release itself opens it). |
+
+| Input                        | Effect                                                                                                                                                                                                                                                                                |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Grip** (hold)              | take the arm — it follows your hand while held (sticky clutch)                                                                                                                                                                                                                        |
+| release Grip                 | the arm **parks** where it is (ratchet) — re-centre your hand, re-grab to continue                                                                                                                                                                                                    |
+| **A** (right) / **X** (left) | hand that arm **back to the policy**                                                                                                                                                                                                                                                  |
+| **Trigger**                  | gripper. At takeover it is **locked**: squeezing tighter passes through, opening below where the gripper stood cannot happen — grabbing the clutch with a slack trigger never drops a held object. One full squeeze-and-release unlocks direct control (the release itself opens it). |
+
 
 Ending the console (`q` / `Ctrl-C`) stops the policy and **saves the episode** — the save
 blocks while the mp4s encode (scales with rollout length). Press **`f`** instead to stop
@@ -49,14 +45,16 @@ garbage.
 **Who was driving is a per-step label, not a file boundary.** Every array in
 `trajectory.h5` has length `T` (one entry per step), index-aligned:
 
-| Dataset | Meaning |
-|---|---|
-| `action/controller_info/intervening` | `(T,)` bool — **`true` on the steps where a human drove at least one arm.** This is the teleop mask. |
-| `action/controller_info/clutch_left` / `clutch_right` | `(T,)` bool — per-arm: was that Grip held |
-| `action/human/<arm>/joint_position` · `gripper_position` | `(T,7)` / `(T,)` — the human's command. **NaN rows = nobody drove this arm that step** (NaN means "no output", never zero) |
-| `action/policy/<arm>/…` + `action/policy/valid·tick·host_ts` | the policy's would-be command, recorded on **every** step — including while you drive (its counterfactual) |
-| `action/<arm>/joint_position` · `gripper_position` | the command **in force**: the policy's while it drives, yours while you do — the same action semantics as a hand demo |
-| `observation/*` | measured state (joints, velocities, torques), as always |
+
+| Dataset                                                      | Meaning                                                                                                                    |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `action/controller_info/intervening`                         | `(T,)` bool — **`true` on the steps where a human drove at least one arm.** This is the teleop mask.                       |
+| `action/controller_info/clutch_left` / `clutch_right`        | `(T,)` bool — per-arm: was that Grip held                                                                                  |
+| `action/human/<arm>/joint_position` · `gripper_position`     | `(T,7)` / `(T,)` — the human's command. **NaN rows = nobody drove this arm that step** (NaN means "no output", never zero) |
+| `action/policy/<arm>/…` + `action/policy/valid·tick·host_ts` | the policy's would-be command, recorded on **every** step — including while you drive (its counterfactual)                 |
+| `action/<arm>/joint_position` · `gripper_position`           | the command **in force**: the policy's while it drives, yours while you do — the same action semantics as a hand demo      |
+| `observation/*`                                              | measured state (joints, velocities, torques), as always                                                                    |
+
 
 `info.json` and the HDF5 attrs carry `dagger: true`, so you can tell a DAgger rollout from
 a plain demo without opening the HDF5.
@@ -98,9 +96,9 @@ is in the same file — exactly the transition data that makes DAgger correction
 ## 4. Limits
 
 - **Camera budget ≈ 3 minutes per episode** — frames buffer raw in RAM until save
-  (~125 MB/s at 3 × 720p @ 15 fps); past the budget the video freezes (one
-  backend-console warning) while joints, actions and the flags keep recording. Keep
-  rollouts inside the window or split into sessions.
+(~125 MB/s at 3 × 720p @ 15 fps); past the budget the video freezes (one
+backend-console warning) while joints, actions and the flags keep recording. Keep
+rollouts inside the window or split into sessions.
 - `soda record stop fail` **discards the whole episode** — including every correction.
 - Nothing is on disk until the save at stop; a crash mid-rollout loses the episode.
 

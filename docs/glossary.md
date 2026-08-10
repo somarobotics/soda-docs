@@ -1,10 +1,5 @@
 # Glossary
 
-!!! abstract "Purpose / Audience"
-    short definitions of the terms the SODA docs use, with links to the
-    page that owns each topic. Alphabetical.
-
-
 **Action chunk / temporal ensemble** — one policy inference returns a *chunk* of `H` future
 steps (`(H, 14)` for the default action space); the managed runner blends overlapping chunks
 with an ACT-style temporal ensemble and consumes them at the control rate.
