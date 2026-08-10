@@ -93,6 +93,10 @@ soda list | params '<json>'      # list policies · live-tune knobs
 takeover. The whole rollout is saved as **one** episode; takeover spans are flagged  
 per step (`action/controller_info/intervening`), not split into separate files.
 
+In the `--record` / `--dagger` console: **q / Ctrl-C** stop the rollout and **save** the
+episode (blocks while the mp4s encode); **f** stops and **discards** it — no encode,
+nothing saved — for a run you already know is garbage.
+
 ## Replay ⚠ moves the arms
 
 ```

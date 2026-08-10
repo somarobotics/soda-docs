@@ -59,6 +59,7 @@ nav:
   - Operate:
       - Control Modes: control-modes.md
       - CLI Reference: soda-cli-reference.md
+      - Operating Guidelines: operating-guidelines.md
       - Software Updates: updates.md
   - Your Policy:
       - Run Your Policy: running-your-policy.md

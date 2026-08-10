@@ -25,7 +25,7 @@ The episodes you collect and train on. Same `trajectory.h5` + `cameras/*.mp4` + 
 
 
 !!! note "Camera budget for long rollouts:"
-    the recorder buffers raw camera frames in RAM until save (same as teleop). At 3 × 720p cameras this covers roughly **3 minutes** of video per episode; past that, camera frames freeze (one warning on the backend console) while joints, actions and the intervening flags keep recording to the end. Keep DAgger sessions inside that window, or split long runs into several `soda record start`/`stop` sessions.
+    the recorder buffers raw camera frames in RAM until save (same as teleop). At 3 × 720p cameras @ 15 fps this covers roughly **3 minutes** of video per episode; past that, camera frames freeze (one warning on the backend console) while joints, actions and the intervening flags keep recording to the end. Keep DAgger sessions inside that window, or split long runs into several `soda record start`/`stop` sessions.
 
 
 ## Model debug telemetry → `output/policy_runs/<policy_id>/<name>/`  · advanced, off by default

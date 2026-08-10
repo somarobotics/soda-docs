@@ -227,7 +227,8 @@ and [`docs/integration/zmq-device-contract.md`](shipped-docs.md).
 | Start a policy | `soda run <id> "prompt"` |
 | Record a rollout | `soda run <id> "prompt" --record` (`--dagger` = record + Quest takeover) |
 | Hold / resume | `soda pause` / `soda resume` |
-| Stop the policy | `q` / `Ctrl-C` in the console, or `s` in `soda keys` |
+| Stop the policy | `q` / `Ctrl-C` in the console (saves the recording), or `s` in `soda keys` |
+| Discard a bad recording | `f` in the run console — stops the rollout, saves nothing (no encode) |
 | Stop the whole stack | `soda stop` (launcher survives; `soda up` restarts) |
 | Live-tune | `soda params '{"...":...}'` |
 | Change server IP | edit `host` / `port` in that policy's `/opt/robot/policies/policies/<id>.yaml` |

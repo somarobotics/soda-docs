@@ -70,6 +70,14 @@ curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | bash
 
     [:material-arrow-right-thin: soda-cli-reference](soda-cli-reference.md)
 
+-   :material-clipboard-check:{ .lg .middle } **Operating Guidelines**
+
+    ---
+
+    Field-tested habits: teleop checks, tracking rules, the safe power-off sequence.
+
+    [:material-arrow-right-thin: operating-guidelines](operating-guidelines.md)
+
 -   :material-update:{ .lg .middle } **Software Updates**
 
     ---

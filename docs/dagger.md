@@ -34,7 +34,9 @@ conventions): [quest-setup.md](quest-setup.md) ·
 | **Trigger** | gripper. At takeover it is **locked**: squeezing tighter passes through, opening below where the gripper stood cannot happen — grabbing the clutch with a slack trigger never drops a held object. One full squeeze-and-release unlocks direct control (the release itself opens it). |
 
 Ending the console (`q` / `Ctrl-C`) stops the policy and **saves the episode** — the save
-blocks while the mp4s encode (scales with rollout length).
+blocks while the mp4s encode (scales with rollout length). Press **`f`** instead to stop
+and **discard** the episode — no encode, nothing saved — for a run you already know is
+garbage.
 
 ---
 
@@ -95,9 +97,10 @@ is in the same file — exactly the transition data that makes DAgger correction
 
 ## 4. Limits
 
-- **Camera budget ≈ 3 minutes per episode** — frames buffer in RAM until save; past the
-  budget the video freezes (one backend-console warning) while joints, actions and the
-  flags keep recording. Keep rollouts inside the window or split into sessions.
+- **Camera budget ≈ 3 minutes per episode** — frames buffer raw in RAM until save
+  (~125 MB/s at 3 × 720p @ 15 fps); past the budget the video freezes (one
+  backend-console warning) while joints, actions and the flags keep recording. Keep
+  rollouts inside the window or split into sessions.
 - `soda record stop fail` **discards the whole episode** — including every correction.
 - Nothing is on disk until the save at stop; a crash mid-rollout loses the episode.
 

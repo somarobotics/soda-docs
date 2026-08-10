@@ -10,6 +10,9 @@
 No software path guarantees a stop unconditionally — it depends on the launcher being alive and
 the firmware watchdog working. Treat the AC plug as the e-stop of record.
 
+Planned shutdown sequence (zero-g → hand-pose to a safe posture → `soda stop` → unplug):
+[operating-guidelines.md](operating-guidelines.md).
+
 ## Operating rules
 
 - Run the browser UI on a **separate laptop**; keep the robot host headless.
