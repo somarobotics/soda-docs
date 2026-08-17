@@ -170,8 +170,22 @@ gripper fully open/closed = `binarize_gripper`.
 
 ## 5. Change the control logic — the open upper layer
 
-The robot's model I/O, control loop, homing, and **safety clamps are sealed and compiled**.
-The one layer we open to you is `/opt/robot/deploy/user_hooks.py`:
+**The file you edit is `/opt/robot/deploy/user_hooks.py`** — the one place on the robot
+where your own control code goes. It hot-reloads on the next `soda run` and survives OTA
+updates. Before diving in, know the boundary:
+
+| Layer | Changeable? | Where / why |
+|---|---|---|
+| Filters & shaping — 1-euro smoothing, chunk ensemble, gripper Schmitt, sag comp, gripper map | **Yes** | `/opt/robot/deploy/user_hooks.py` PART 1 + the five hooks (below) |
+| Policy registration — server `host`/`port`, `action_space`, gripper mapping, per-run defaults (`control_hz`, `ensemble_decay`, `max_joint_delta`, …) | **Yes** | `/opt/robot/policies/policies/<id>.yaml`, or live via `soda params` (§4) |
+| Your policy server — weights, framework, inference code | **Yes** | it runs on *your* machine; SODA is only a client |
+| Per-unit operational config — boot mode, stiffness, ports, camera setup | **Yes** | `/opt/robot/config/site.yaml` |
+| Wire protocol / model I/O (msgpack-WebSocket contract) | **No** | fixed platform contract — see [policy-serving.md](policy-serving.md) |
+| The control loop itself — rates, homing, chunk consumption | **No** | sealed, compiled (`.so`); no source on the robot |
+| Safety layer — per-tick clamps, absolute velocity ceilings, outlier rejection, joint limits | **No** | always runs **after** your hooks; cannot be bypassed |
+| Device-side guards — effort clamp, torque slew, SAFE-HOLD watchdog, gravity comp | **No** | enforced on the device for every client, every mode |
+
+Inside `/opt/robot/deploy/user_hooks.py`:
 
 - **PART 1** is SODA's actual differentiation logic — the 1-euro smoothing, chunk ensemble,
   gripper Schmitt trigger, sag comp, and gripper map — transcribed to plain, editable NumPy
