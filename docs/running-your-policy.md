@@ -128,7 +128,7 @@ close = 1.52 (GP100 vs GR100: see the [glossary](glossary.md)). **Reversed range
 
 ## 3. Run your own checkpoint
 
-Path A — your checkpoint speaks the 14-DoF joint interface and the robot runs the loop for
+Your checkpoint speaks the 14-DoF joint interface and the robot runs the loop for
 you (chunk ensembling, filtering, safety clamps, homing):
 
 1. Serve your checkpoint as an **openpi-compatible WebSocket server** on your GPU machine.
@@ -214,23 +214,6 @@ def target(cmd14, ctx):
 
 Save the file and re-issue `soda run` (or `POST /policy/start`) — it **hot-reloads**, no
 restart, and survives OTA updates.
-
----
-
-## 6. Bring your own loop entirely (Path B)
-
-If you want to own the real-time loop — your own chunk blending, per-tick impedance gains,
-raw torque, logging — skip the built-in runner:
-
-```bash
-cp scripts/deploy/soda_deploy_client.py /opt/robot/deploy/my_client.py   # fill in the 2 TODO blocks
-python /opt/app/deploy/my_client.py --dry-run                            # rehearse (reads state, no motion)
-docker exec -it robot-backend-1 env SODA_DEPLOY_CLIENT=/opt/app/deploy/my_client.py \
-    bash scripts/deploy/deploy_up.sh real -- --hz 250                    # own the run
-```
-
-Full contract for both paths: [`scripts/deploy/README.md`](shipped-docs.md)
-and [`docs/integration/zmq-device-contract.md`](shipped-docs.md).
 
 ---
 
