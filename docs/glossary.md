@@ -43,14 +43,6 @@ See [integration/policy-io-contract.md](shipped-docs.md).
 30 minutes (first check ~2 min after boot) and pulls new images from `ghcr.io`.
 See [updates.md](updates.md).
 
-**Plane-1** — the managed / supervisory plane: soda_os owns the loop; HTTP + WebSocket on
-`:8079` / `:8080`; the Web UI, `soda` CLI, and managed policy runner live here.
-See [integration/README.md](shipped-docs.md).
-
-**Plane-2** — the real-time device plane: your own client owns the 500 Hz–1 kHz loop directly
-on the loopback ZMQ device sockets.
-See [integration/zmq-device-contract.md](shipped-docs.md).
-
 **Policy registry** — the per-policy YAML store the managed runner reads. Built-ins ship
 read-only in the image; your entries are one YAML per policy at
 `/opt/robot/policies/policies/<id>.yaml`, re-read on every request (no restart needed).
