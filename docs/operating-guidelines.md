@@ -6,6 +6,12 @@
     grows as experience accumulates.
 
 
+## The Web UI
+
+Need the UI? Just open **`http://<robot-host>:8079`** in a browser — the robot serves it,
+nothing to install. Run the browser on a **separate laptop**, not on the robot host (loading
+the host is the most common cause of control-loop jitter).
+
 ## Teleop
 
 **Teleop starts fine, but moving the Quest controllers does nothing.** Two known causes,
