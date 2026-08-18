@@ -8,6 +8,13 @@ The whole robot ships as **one Docker image** that auto-starts on boot. In norma
 
 ---
 
+## Hardware
+
+The cell runs on an Intel **NUC** as the robot host, with three RealSense cameras: a
+**D435i** as the side/overview camera and a **D405** on each wrist. Have the arms mounted,
+all three cameras connected, and the NUC powered and on the network before installing —
+the installer auto-detects the camera serials.
+
 ## Install (first boot)
 
 **Canonical first-install path.** After Ubuntu 20.04 / 22.04 boots and you have internet, run **one command**:
