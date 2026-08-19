@@ -20,10 +20,6 @@ corrections for retraining. See [dagger.md](dagger.md) · [recordings.md](record
 under `/opt/robot/recordings/hdf5/` (schema 2.1) and replayable with `soda replay`.
 See [recordings.md](recordings.md).
 
-**GP100** — an older HexArm rotary gripper whose 0.0 → 1.52 rad open→close range became the
-historical training-data convention; the policy registry's `gripper_source_*` defaults
-(0.0 / 1.52) come from it.
-
 **GR100** — the rotary gripper on this cell, one per arm. Commanded from 0.0 (open) to
 `site.yaml` `gripper_max_position` (0.67 rad here — a configured safe close, not an absolute
 hardware limit). `GripperMap` affinely maps policy (source) ↔ arm (target) ranges.
