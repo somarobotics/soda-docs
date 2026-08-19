@@ -63,4 +63,4 @@ Everything under `/opt/robot/**` is stored on the robot itself and is **never to
 
 ---
 
-- Vendor / release-engineering side (channels, publishing, fleet-wide rollback): [../developer/vendor/release-workflow.md](shipped-docs.md).
+- Vendor / release-engineering side (channels, publishing, fleet-wide rollback): ../developer/vendor/release-workflow.md.

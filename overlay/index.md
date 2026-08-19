@@ -152,6 +152,5 @@ curl -fsSL https://somarobotics.github.io/soda-ota-channels/bootstrap.sh | bash
 
 <p class="soda-links">
 <a href="specifications/">Specifications</a> ·
-<a href="glossary/">Glossary</a> ·
-<a href="shipped-docs/">Integration &amp; Handover</a>
+<a href="glossary/">Glossary</a>
 </p>

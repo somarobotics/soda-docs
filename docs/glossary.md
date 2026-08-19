@@ -3,7 +3,7 @@
 **Action chunk / temporal ensemble** — one policy inference returns a *chunk* of `H` future
 steps (`(H, 14)` for the default action space); the managed runner blends overlapping chunks
 with an ACT-style temporal ensemble and consumes them at the control rate.
-See [integration/policy-io-contract.md](shipped-docs.md).
+See integration/policy-io-contract.md.
 
 **Clutch** — in Quest teleop, the **grip squeeze** (held) that makes an arm follow your hand;
 release lets go without moving the arm, and each new press re-anchors to the arm's current pose.
@@ -28,12 +28,12 @@ See [specifications.md](specifications.md).
 **Hand-eye calibration** — the ChArUco-based procedure that solves each camera's pose relative
 to the robot (wrist cameras: `T_cam2gripper`; side camera: `T_cam2base` plus the inter-arm
 transform). Results land in `/opt/robot/calibration/dual/` and survive OTA.
-See [handover/physical-model-and-calibration.md](shipped-docs.md).
+See handover/physical-model-and-calibration.md.
 
 **openpi / pi0.5** — the model-serving convention SODA's managed runner speaks: an openpi-style
 msgpack-WebSocket policy server (your process, your weights) answers one observation with one
 action chunk; pi0.5 is a checkpoint family commonly served this way.
-See [integration/policy-io-contract.md](shipped-docs.md).
+See integration/policy-io-contract.md.
 
 **OTA** — over-the-air update. The unit checks its channel file (default `stable.txt`) every
 30 minutes (first check ~2 min after boot) and pulls new images from `ghcr.io`.

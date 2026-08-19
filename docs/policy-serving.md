@@ -7,7 +7,7 @@
     train and host your own policy for this robot. Every number reflects the platform as
     currently deployed. Day-to-day operation: [running-your-policy.md](running-your-policy.md);
     the code-grounded wire appendix ships with the unit
-    ([integration docs](shipped-docs.md)).
+    (integration docs).
 
 
 ---

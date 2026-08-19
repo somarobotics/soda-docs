@@ -99,4 +99,4 @@ Read back the active gains any time with `soda state` or `GET /robot/control_mod
 
 ---
 
-For the engineering deep-dive (the one MIT law, gain regimes, REST surface), see [../developer/control-modes.md](shipped-docs.md).
+For the engineering deep-dive (the one MIT law, gain regimes, REST surface), see ../developer/control-modes.md.

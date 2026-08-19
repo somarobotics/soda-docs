@@ -110,5 +110,5 @@ Managing, listing, and replaying episodes → **[Recordings](./recordings.md)**.
 - [Recordings](./recordings.md) — episode layout, listing, replay
 - [DAgger](./dagger.md) — correcting a policy mid-rollout; same episode format, takeover spans labelled per step
 - [SODA CLI reference](./soda-cli-reference.md) — `soda teleop`, `soda replay`, all commands
-- [Hand-eye calibration](shipped-docs.md) — calibrate cameras before collecting on real hardware
+- Hand-eye calibration — calibrate cameras before collecting on real hardware
 

@@ -35,7 +35,7 @@
 
 
 The URDF `effort` tags are placeholders, **not** actuator torque ceilings — see
-[handover/dynamic-parameters.md](shipped-docs.md) for the full inertial model.
+handover/dynamic-parameters.md for the full inertial model.
 
 ---
 
@@ -58,7 +58,7 @@ The URDF `effort` tags are placeholders, **not** actuator torque ceilings — se
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Command range       | 0.0 (open) → 0.67 rad (closed)                                                                                                                                                       |
 | 0.67 source         | `site.yaml` `gripper_max_position` — a **site-configured safe close**, not an absolute hardware limit                                                                                |
-| URDF joint envelope | 0 … 0.9 rad — the mechanical model's travel, deliberately decoupled from the command range: [handover/physical-model-and-calibration.md](shipped-docs.md) |
+| URDF joint envelope | 0 … 0.9 rad — the mechanical model's travel, deliberately decoupled from the command range: handover/physical-model-and-calibration.md |
 
 
 ---

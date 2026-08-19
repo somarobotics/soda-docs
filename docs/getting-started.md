@@ -213,7 +213,7 @@ docker compose -f /opt/robot/docker-compose.yml restart                 # pick u
 
 For minor tweaks (e.g. a single port number), edit `/opt/robot/config/site.yaml` directly, then run `validate` + `restart`.
 
-If you swap any camera, you must **also re-calibrate** the affected camera — the calibration matrix in `/opt/robot/calibration/` is bound to the camera's serial number. See the [hand-eye calibration guide](shipped-docs.md).
+If you swap any camera, you must **also re-calibrate** the affected camera — the calibration matrix in `/opt/robot/calibration/` is bound to the camera's serial number. See the hand-eye calibration guide.
 
 ### Re-issuing the license
 
@@ -242,6 +242,6 @@ docker compose -f /opt/robot/docker-compose.yml restart
 | [safety](safety.md)                                                      | What the software STOP does and does not guarantee, e-stop behavior      |
 | [soda CLI reference](soda-cli-reference.md)                              | Full `soda` command list and flags                                       |
 | [software updates](updates.md)                                           | The update / rollback flow in detail                                     |
-| [hand-eye calibration](shipped-docs.md)             | Hand-eye calibration walkthrough                                         |
+| hand-eye calibration             | Hand-eye calibration walkthrough                                         |
 
 
