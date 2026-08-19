@@ -67,6 +67,26 @@ bash /tmp/install.sh
 
 ---
 
+## Calibration
+
+Calibrate the cameras once at first bring-up — and again whenever a camera is swapped or
+remounted, or the arm bases move. Put the printed ChArUco board on the table, then:
+
+```bash
+soda calibrate        # guided console: LEFT wrist → RIGHT wrist → SIDE camera, in order
+```
+
+Per camera: the arm floats (zero-gravity) — hand-pose it until the board is well in view
+(the console shows a live corner count), press **Enter**, and the sweep + solve run
+automatically before auto-advancing to the next camera. Keep the order — the side camera
+is solved against the two wrist calibrations.
+
+Results land in `/opt/robot/calibration/` and survive updates; acceptance is **< 5 mm**
+per camera. A new calibration loads on the next backend restart:
+`docker compose -f /opt/robot/docker-compose.yml restart`.
+
+---
+
 ## Day-to-day operation
 
 The container is configured with `restart: unless-stopped`, so it **auto-starts on every boot**. Open the browser, click **Launch**. No commands needed.
@@ -213,7 +233,7 @@ docker compose -f /opt/robot/docker-compose.yml restart                 # pick u
 
 For minor tweaks (e.g. a single port number), edit `/opt/robot/config/site.yaml` directly, then run `validate` + `restart`.
 
-If you swap any camera, you must **also re-calibrate** the affected camera — the calibration matrix in `/opt/robot/calibration/` is bound to the camera's serial number. See the hand-eye calibration guide.
+If you swap any camera, you must **also re-calibrate** the affected camera — the calibration matrix in `/opt/robot/calibration/` is bound to the camera's serial number. See [Calibration](#calibration) above.
 
 ### Re-issuing the license
 
@@ -242,6 +262,5 @@ docker compose -f /opt/robot/docker-compose.yml restart
 | [safety](safety.md)                                                      | What the software STOP does and does not guarantee, e-stop behavior      |
 | [soda CLI reference](soda-cli-reference.md)                              | Full `soda` command list and flags                                       |
 | [software updates](updates.md)                                           | The update / rollback flow in detail                                     |
-| hand-eye calibration             | Hand-eye calibration walkthrough                                         |
 
 
