@@ -70,7 +70,25 @@ bash /tmp/install.sh
 ## Calibration
 
 Calibrate the cameras once at first bring-up — and again whenever a camera is swapped or
-remounted, or the arm bases move. Put the printed ChArUco board on the table, then:
+remounted, or the arm bases move.
+
+**The board** — we use the same Calib.io ChArUco target family as the DROID platform,
+one size up from DROID's own (the 400×300 mm *coarse* variant):
+
+| spec | value |
+| --- | --- |
+| type | ChArUco (checkerboard + embedded ArUco markers) |
+| grid | 12 × 9 squares |
+| square side | 30 mm |
+| marker side | 23 mm |
+| ArUco dictionary | DICT_5X5 |
+| product | [Calib.io ChArUco target, 400×300 mm, coarse](https://calib.io/products/charuco-targets) |
+
+Any board printed with these exact parameters works. A board with a different grid,
+square size, or ArUco dictionary will **not** be detected — in particular the smaller
+300×200 mm variant from DROID's own shopping list is *not* interchangeable with ours.
+
+Put the board flat on the table, then:
 
 ```bash
 soda calibrate        # guided console: LEFT wrist → RIGHT wrist → SIDE camera, in order

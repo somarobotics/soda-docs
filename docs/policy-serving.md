@@ -114,7 +114,7 @@ camera stream rate bounds freshness (≤ ~67 ms age), not the inference rate.
 - Arm joints: **absolute positions, radians** (measured, not commanded).
 - Grippers: expressed in **your declared policy convention** — before sending, the
 robot maps the measured hardware gripper (0.0 open → 0.67 closed) back into your
-`gripper_source_`* range (§6), so `state` and `actions` always share one
+`gripper_source_*` range (§6), so `state` and `actions` always share one
 convention. With the template's identity mapping (source = 0→0.67) the state is
 the hardware range itself; a policy trained on, e.g., a 0→1.52 convention
 receives 0→1.52. If these fields are omitted, the platform default source
