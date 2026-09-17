@@ -70,5 +70,6 @@ nav:
       - Quest Headset Setup: quest-setup.md
       - Where Recordings Go: recordings.md
   - Reference:
+      - HTTP API: api-reference.md
       - Specifications: specifications.md
       - Glossary: glossary.md
