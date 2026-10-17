@@ -135,8 +135,9 @@ Full name is `<side>/<name>`, `<side>` = `left` or `right`. Payload =
 | `<side>/wrench`              | `[fx,fy,fz, mx,my,mz]` Cartesian force estimate          |
 
 
-On real hardware the current release publishes `pos` / `vel` / `eff` / `joint_states` only;
-`ee_pose` / `wrench` / `tau_ext` stream on the sim device.
+All topics stream on both real hardware and the sim device. On real arms
+`ee_pose` / `wrench` / `tau_ext` are model-based estimates computed at ~100 Hz
+(FK + gravity model); `pos` / `vel` / `eff` stream at the full device rate.
 
 ```
 soda stream --sub left/wrench        # one topic

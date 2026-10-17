@@ -40,7 +40,8 @@ garbage.
 
 **One episode for the whole rollout — policy-driven steps included** — under
 `recordings/hdf5/<timestamp>/`, in exactly the format of a hand-driven teleop demo
-(schema 2.1: `trajectory.h5` + `cameras/*.mp4` + `info.json` + `instruction.txt`).
+(schema 2.2: `trajectory.h5` + `cameras/*.mp4` + `info.json` + `instruction.txt`, plus
+`cameras/<cam>_depth.mkv` for cameras that record depth).
 
 **Who was driving is a per-step label, not a file boundary.** Every array in
 `trajectory.h5` has length `T` (one entry per step), index-aligned:

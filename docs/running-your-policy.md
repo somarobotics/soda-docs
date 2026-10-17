@@ -76,6 +76,8 @@ image_mode: pad169              # pad169 | pad43 | stretch43 | stretch  (pad169 
 
 # --- everything below is OPTIONAL — omit a field to take its default ---
 action_space: auto              # auto | joint_pos | joint_vel | cart_pos | cart_vel | joint_impedance
+send_timestamps: false          # true = add per-modality capture timestamps to every request (integration/policy-io-contract.md §3.4)
+send_depth: false               # true = add the wrist cameras' depth (uint16 mm, 224x224) to every request (integration/policy-io-contract.md §3.5)
 gripper_source_open: 0.0        # policy value for "fully open"    (default 0.0)
 gripper_source_close: 1.52      # policy value for "fully closed"  (default 1.52 — the legacy training convention)
 # gripper_target_open / _close default from site.yaml gripper_max_position (GR100 ≈ 0.67) — set only to override

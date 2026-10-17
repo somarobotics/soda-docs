@@ -17,7 +17,7 @@ shadow streams are saved as **one** episode (recorded at 150 Hz), with per-step
 corrections for retraining. See [dagger.md](dagger.md) · [recordings.md](recordings.md).
 
 **Episode (HDF5)** — one recorded attempt: 14-dim state + action, timestamps, and video, stored
-under `/opt/robot/recordings/hdf5/` (schema 2.1) and replayable with `soda replay`.
+under `/opt/robot/recordings/hdf5/` (schema 2.2) and replayable with `soda replay`.
 See [recordings.md](recordings.md).
 
 **GR100** — the rotary gripper on this cell, one per arm. Commanded from 0.0 (open) to

@@ -84,7 +84,8 @@ recordings/hdf5/2026-05-27_14-30-12/
 └── cameras/
     ├── left.mp4       # at the camera's real frame rate (~15 fps on the current config), synced to trajectory.h5 frame_index
     ├── right.mp4
-    └── side.mp4       # filenames come from --record-cameras
+    ├── side.mp4       # filenames come from --record-cameras
+    └── left_depth.mkv # only for cameras with record_depth: true — lossless aligned depth, see Recordings
 ```
 
 - **State/action** is `[left_j1..j6, left_gripper, right_j1..j6, right_gripper]` (14 values).
