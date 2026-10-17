@@ -221,12 +221,12 @@ internal loop measures ~142 Hz. Design to the nominal values; the shortfall is
 ## 6. Deployment configuration
 
 Each policy is registered on the robot as **one YAML file** in the policy registry —
-on the robot host, `/opt/robot/policies/policies/<id>.yaml` (the UI's **Add policy**
+on the robot host, `/opt/robot/policies/<id>.yaml` (the UI's **Add policy**
 dialog writes these for you; the registry re-reads disk on every request, so no
 restart is needed). Annotated template:
 
 ```yaml
-# /opt/robot/policies/policies/your_policy_name.yaml
+# /opt/robot/policies/your_policy_name.yaml
 id: your_policy_name
 type: openpi_ws              # WebSocket policy, protocol of §2
 host: <your-server-ip>

@@ -60,11 +60,11 @@ return — they never collapse.
 ## 2. Point the robot at your policy server
 
 The robot finds your server through the **policy registry** — **one YAML file per policy**
-under `/opt/robot/policies/policies/` on the unit (bind-mounted, survives updates). Each
+under `/opt/robot/policies/` on the unit (bind-mounted, survives updates). Each
 file is one server plus how to talk to it; the filename stem is the id if you leave `id` out:
 
 ```yaml
-# /opt/robot/policies/policies/my_pick_v1.yaml   —  one policy per file
+# /opt/robot/policies/my_pick_v1.yaml   —  one policy per file
 id: my_pick_v1                  # unique key you pass to `soda run` (a–z, 0–9, _); defaults to the filename stem
 name: "Pick v1"                 # label shown in the UI dropdown
 type: openpi_ws                 # server type — openpi_ws (the openpi / pi0 / pi0.5 WebSocket)
@@ -170,7 +170,7 @@ updates. Before diving in, know the boundary:
 | Layer                                                                                                                                                | Changeable? | Where / why                                                              |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------ |
 | Filters & shaping — 1-euro smoothing, chunk ensemble, gripper Schmitt, sag comp, gripper map                                                         | **Yes**     | `/opt/robot/deploy/user_hooks.py` PART 1 + the five hooks (below)        |
-| Policy registration — server `host`/`port`, `action_space`, gripper mapping, per-run defaults (`control_hz`, `ensemble_decay`, `max_joint_delta`, …) | **Yes**     | `/opt/robot/policies/policies/<id>.yaml`, or live via `soda params` (§4) |
+| Policy registration — server `host`/`port`, `action_space`, gripper mapping, per-run defaults (`control_hz`, `ensemble_decay`, `max_joint_delta`, …) | **Yes**     | `/opt/robot/policies/<id>.yaml`, or live via `soda params` (§4) |
 | Your policy server — weights, framework, inference code                                                                                              | **Yes**     | it runs on *your* machine; SODA is only a client                         |
 | Per-unit operational config — boot mode, stiffness, ports, camera setup                                                                              | **Yes**     | `/opt/robot/config/site.yaml`                                            |
 | Wire protocol / model I/O (msgpack-WebSocket contract)                                                                                               | **No**      | fixed platform contract — see [policy-serving.md](policy-serving.md)     |
@@ -225,7 +225,7 @@ restart, and survives OTA updates.
 | Discard a bad recording | `f` in the run console — stops the rollout, saves nothing (no encode)          |
 | Stop the whole stack    | `soda stop` (launcher survives; `soda up` restarts)                            |
 | Live-tune               | `soda params '{"...":...}'`                                                    |
-| Change server IP        | edit `host` / `port` in that policy's `/opt/robot/policies/policies/<id>.yaml` |
+| Change server IP        | edit `host` / `port` in that policy's `/opt/robot/policies/<id>.yaml` |
 | Change control logic    | edit `/opt/robot/deploy/user_hooks.py`, then re-`soda run`                     |
 | List policies           | `soda list`                                                                    |
 

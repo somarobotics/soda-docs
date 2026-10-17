@@ -41,7 +41,7 @@ See [updates.md](updates.md).
 
 **Policy registry** — the per-policy YAML store the managed runner reads. Built-ins ship
 read-only in the image; your entries are one YAML per policy at
-`/opt/robot/policies/policies/<id>.yaml`, re-read on every request (no restart needed).
+`/opt/robot/policies/<id>.yaml`, re-read on every request (no restart needed).
 See [running-your-policy.md](running-your-policy.md).
 
 **SAFE-HOLD** — the client-death watchdog: after `idle_hold_max_ms` (default 2000 ms) with no
